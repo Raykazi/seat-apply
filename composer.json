@@ -1,0 +1,36 @@
+{
+    "name": "raykazi/seat-apply",
+    "description": "A module for SeAT that lets nerds apply to your corp.",
+    "type": "seat-plugin",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Raykazi",
+            "email": "raykazi@windrammers.com"
+        },
+        {
+            "name": "Majestic",
+            "email": "majestic@windrammers.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Raykazi\\Seat\\SeatApplication\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Raykazi\\Seat\\SeatApplication\\ApplicationServiceProvider"
+            ]
+        }
+     },	     
+    "require": {
+        "eveseat/services": "^4.1",
+        "eveseat/eveapi": "^4.0",
+        "eveseat/web": "^4.0",
+        "eveseat/eseye": "^2.0"
+    }
+}
