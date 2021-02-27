@@ -3,7 +3,7 @@
 @section('title', trans('application::application.apply'))
 @section('page_header', trans('application::application.apply'))
 @inject('request', 'Illuminate\Http\Request')
-@section('full')
+@section('left')
 <div class="col-md-6">
     <div class="card card-success">
         <div class="card-header">
