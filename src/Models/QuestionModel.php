@@ -26,6 +26,6 @@ class QuestionModel extends Model {
     protected $table = 'seat_application_questions';
 
     protected $fillable = [
-        'qid', 'order', 'question','type','options'
+        'qid', 'order', 'question','type','options','hint'
     ];
 }

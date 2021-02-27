@@ -20,9 +20,9 @@
                 </div>
                 <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
-                        <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     <div class="col-md-8">
-                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text">
+                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text"></textarea>
+                        <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     </div>
                 </div>
                     @foreach ($questions as $q)
@@ -31,7 +31,6 @@
                         <div class="col-md-8">
                             @if($q->type == "text")
                                 <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" value="" type="text">
-                                    <p class="form-text text-muted mb-0">time to load up your foreach G</p>
 {{--                            @elseif($q->type == "radio") //TODO Unfuck this @Maj--}}
 {{--                                @foreach(explode(",", $q->options) as $opt)--}}
 {{--                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">--}}
@@ -49,6 +48,9 @@
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                     @endforeach
                                 </select>
+                            @endif
+                            @if($q->hint)
+                                <p class="form-text text-muted mb-0">{{$q->hint}}</p>
                             @endif
                         </div>
                     </div>
