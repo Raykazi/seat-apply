@@ -20,6 +20,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
+                        <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     <div class="col-md-8">
                         <input id="altCharacters" name="alts" class="form-control input-md" value="" type="text">
                     </div>
@@ -30,6 +31,7 @@
                         <div class="col-md-8">
                             @if($q->type == "text")
                                 <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" value="" type="text">
+                                    <p class="form-text text-muted mb-0">time to load up your foreach G</p>
 {{--                            @elseif($q->type == "radio") //TODO Unfuck this @Maj--}}
 {{--                                @foreach(explode(",", $q->options) as $opt)--}}
 {{--                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">--}}
@@ -55,8 +57,8 @@
             <div class="box-footer">
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label" for="submit"></label>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-check"></i> Update
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Submit
                         </button>
                 </div>
                 {{ csrf_field() }}
