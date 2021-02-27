@@ -1,168 +1,87 @@
+
 @extends('web::layouts.grids.12')
 
-@section('title', trans('srp::srp.list'))
-@section('page_header', trans('srp::srp.list'))
-
-@push('head')
-<link rel = "stylesheet"
-   type = "text/css"
-   href = "https://snoopy.crypta.tech/snoopy/seat-srp-approval.css" />
-
-<link rel="stylesheet" type="text/css" href="{{ asset('web/css/application-hook.css') }}" />
-@endpush
+@section('title', trans('application::application.apps'))
+@section('page_header', trans('application::application.apps'))
 
 @section('full')
     <div class="card card-primary card-solid">
         <div class="card-header">
-            <h3 class="card-title">SRP Requests</h3>
+            <h3 class="card-title">Applications</h3>
         </div>
         <div class="card-body">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending Requests</a></li>
-              <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Completed Requests</a></li>
+              <li class="active nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
+              <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Completed</a></li>
             </ul>
 
           <div class="tab-content">
           <div class="tab-pane active" id="tab_1">
-          <table id="srps" class="table table-bordered">
+          <table id="apps" class="table table-bordered">
             <thead>
                 <tr>
-                  <th>{{ trans('srp::srp.id') }}</th>
-                  <th>{{ trans('srp::srp.characterName') }}</th>
-                  <th>{{ trans('srp::srp.shipType') }}</th>
-                  <th>{{ trans('srp::srp.costs') }}</th>
-                  <th>{{ trans('srp::srp.paidout') }}</th>
-                  <th>{{ trans('srp::srp.submitted') }}</th>
-                  <th>{{ trans('srp::srp.action') }}</th>
-                  <th>{{ trans('srp::srp.notes') }}</th>
-                  <th>{{ trans('srp::srp.changedby') }}</th>
+                  <th>ID</th>
+                  <th>{{ trans('application::application.characterName') }}</th>
+                  <th>{{ trans('application::application.app_status') }}</th>
+                  <th>{{ trans('application::application.app_action') }}</th>
+                  <th>{{ trans('application::application.app_notes') }}</th>
+                  <th>{{ trans('application::application.app_approver') }}</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($killmails as $kill)
-                @if(($kill->approved === 0) || ($kill->approved === 1))
-                <tr>
-                  <td>
-                      <a href="https://zkillboard.com/kill/{{ $kill->kill_id }}/" target="_blank">{{ $kill->kill_id }}</a>
-                      @if(!is_null($kill->ping()))
-                      <button class="btn btn-xs btn-link" data-toggle="modal" data-target="#srp-ping" data-kill-id="{{ $kill->kill_id }}">
-                          <i class="fa fa-comment"></i>
-                      </button>
-                      @endif
-                  </td>
-                  <td><span class='id-to-name' data-id="{{ $kill->character_name }}">{{ $kill->character_name }}</span></td>
-                  <td>{{ $kill->ship_type }}</td>
-                  <td>
-                      <button type="button" class="btn btn-xs btn-link" data-toggle="modal" data-target="#insurances" data-kill-id="{{ $kill->kill_id }}">
-                          {{ number_format($kill->cost, 2) }} ISK
-                      </button>
-                  </td>
-                  @if ($kill->approved === 0)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-warning">Pending</span></td>
-                  @elseif ($kill->approved === -1)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-danger">Rejected</span></td>
-                  @elseif ($kill->approved === 1)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-success">Approved</span></td>
-                  @elseif ($kill->approved === 2)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-primary">Paid Out</span></td>
+              <tbody>
+              @foreach ($applications as $app)
+                  @if(($app->status))
+                      <tr>
+                          <td>{{ $app->application_id }} </td>
+                          <td><span class='id-to-name' data-id="{{ $app->character_name }}">{{ $app->character_name }}</span></td>
+                          @if ($app->status == 0)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-secondary">Pending</span></td>
+                          @elseif ($app->status == -1)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-danger">Rejected</span></td>
+                          @elseif ($app->status == 1)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-warning">Reviewing</span></td>
+                          @elseif ($app->status == 2)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-primary">Interviewing</span></td>
+                          @endif
+                          <td>
+                              <button type="button" class="btn btn-xs btn-danger app-status" id="app-status" name="{{ $app->application_id }}">Reject</button>
+                              <button type="button" class="btn btn-xs btn-warning app-status" id="app-status" name="{{ $app->application_id }}">Review</button>
+                              <button type="button" class="btn btn-xs btn-primary app-status" id="app-status" name="{{ $app->application_id }}">Interview</button>
+                              <button type="button" class="btn btn-xs btn-success app-status" id="app-status" name="{{ $app->application_id }}">Accept</button>
+                          </td>
+                          <td data-order="{{ strtotime($app->created_at) }}>
+                      <span data-toggle="tooltip" data-placement="top" title="{{ $app->created_at }}">{{ human_diff($app->created_at) }}</span>
+                          </td>
+
+
+                          <td id="approver-{{ $app->application_id }}">{{ $app->approver }}</td>
+                      </tr>
                   @endif
-                  <td data-order="{{ strtotime($kill->created_at) }}>
-                      <span data-toggle="tooltip" data-placement="top" title="{{ $kill->created_at }}">{{ human_diff($kill->created_at) }}</span>
-                  </td>
-                  <td>
-                      <button type="button" class="btn btn-xs btn-warning srp-status" id="srp-status" name="{{ $kill->kill_id }}">Pending</button>
-                      <button type="button" class="btn btn-xs btn-danger srp-status" id="srp-status" name="{{ $kill->kill_id }}">Reject</button>
-                      <button type="button" class="btn btn-xs btn-success srp-status" id="srp-status" name="{{ $kill->kill_id }}">Approve</button>
-                      <button type="button" class="btn btn-xs btn-primary srp-status" id="srp-status" name="{{ $kill->kill_id }}">Paid Out</button>
-                  </td>                 
-                  <td>
-                  @if(!is_null($kill->reason()))
-                      <button class="btn btn-xs btn-link" data-toggle="modal" data-target="#srp-reason" data-kill-id="{{ $kill->kill_id }}">
-                          <i class="fa fa-comment"></i>
-                      </button>
-                  @endif
-                      <button class="btn btn-xs btn-link" data-toggle="modal" data-target="#srp-reason-edit" data-kill-id="{{ $kill->kill_id }}">
-                          <i class="fas fa-pencil-alt snoopy"></i>
-                      </button>
-                  </td>
-                  <td id="approver-{{ $kill->kill_id }}">{{ $kill->approver }}</td>
-                </tr>
-                @endif
-                @endforeach
-            </tbody>
+              @endforeach
+              </tbody>
           </table>
         </div>
           <div class="tab-pane" id="tab_2">
           <table id="srps-arch" class="table table-bordered">
             <thead>
                 <tr>
-                  <th>{{ trans('srp::srp.id') }}</th>
-                  <th>{{ trans('srp::srp.characterName') }}</th>
-                  <th>{{ trans('srp::srp.shipType') }}</th>
-                  <th>{{ trans('srp::srp.costs') }}</th>
-                  <th>{{ trans('srp::srp.paidout') }}</th>
-                  <th>{{ trans('srp::srp.submitted') }}</th>
-                  <th>{{ trans('srp::srp.notes') }}</th>
-                  <th>{{ trans('srp::srp.changedby') }}</th>
+                    <th>ID</th>
+                    <th>{{ trans('application::application.characterName') }}</th>
+                    <th>{{ trans('application::application.app_status') }}</th>
+                    <th>{{ trans('application::application.app_action') }}</th>
+                    <th>{{ trans('application::application.app_notes') }}</th>
+                    <th>{{ trans('application::application.app_approver') }}</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($killmails as $kill)
-                @if(($kill->approved === -1) || ($kill->approved === 2))
-                <tr>
-                  <td>
-                      <a href="https://zkillboard.com/kill/{{ $kill->kill_id }}/" target="_blank">{{ $kill->kill_id }}</a>
-                      @if(!is_null($kill->ping()))
-                      <button class="btn btn-xs btn-link" data-toggle="modal" data-target="#srp-ping" data-kill-id="{{ $kill->kill_id }}">
-                          <i class="fa fa-comment"></i>
-                      </button>
-                      @endif
-                  </td>
-                  <td><span class='id-to-name' data-id="{{ $kill->character_name }}">{{ $kill->character_name }}</span></td>
-                  <td>{{ $kill->ship_type }}</td>
-                  <td>
-                      <button type="button" class="btn btn-xs btn-link" data-toggle="modal" data-target="#insurances" data-kill-id="{{ $kill->kill_id }}">
-                          {{ number_format($kill->cost, 2) }} ISK
-                      </button>
-                  </td>
-                  @if ($kill->approved === 0)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-warning">Pending</span></td>
-                  @elseif ($kill->approved === -1)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-danger">Rejected</span></td>
-                  @elseif ($kill->approved === 1)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-success">Approved</span></td>
-                  @elseif ($kill->approved === 2)
-                    <td id="id-{{ $kill->kill_id }}"><span class="badge badge-primary">Paid Out</span></td>
-                  @endif
-                  <td data-order="{{ strtotime($kill->created_at) }}>
-                      <span data-toggle="tooltip" data-placement="top" title="{{ $kill->created_at }}">{{ human_diff($kill->created_at) }}</span>
-                  </td>
-                  <td>
-                  @if(!is_null($kill->reason()))
-                      <button class="btn btn-xs btn-link" data-toggle="modal" data-target="#srp-reason" data-kill-id="{{ $kill->kill_id }}">
-                          <i class="fa fa-comment"></i>
-                      </button>
-                  @else
-                      -
-                  @endif
-                  </td>
-                  <td id="approver-{{ $kill->kill_id }}">{{ $kill->approver }}</td>
-                </tr>
-                @endif
-                @endforeach
-            </tbody>
           </table>
         </div>
         </div>
           </div>
     </div>
-    @include('srp::includes.insurances-modal')
-    @include('srp::includes.ping-modal')
-    @include('srp::includes.reason-edit-modal')
-    @include('srp::includes.reason-modal')
+
     <div class="card-footer text-muted">
-        Plugin maintained by <a href="{{ route('srp.about') }}"> {!! img('characters', 'portrait', 96057938, 64, ['class' => 'img-circle eve-icon small-icon']) !!} Crypta Electrica</a>. <span class="float-right snoopy" style="color: #fa3333;"><i class="fas fa-signal"></i></span>
+        Plugin maintained by <a href="{{ route('application.about') }}"> {!! img('characters', 'portrait', 94819809, 64, ['class' => 'img-circle eve-icon small-icon']) !!} Raykaze Jenkins</a>. <span class="float-right snoopy" style="color: #fa3333;"><i class="fas fa-signal"></i></span>
     </div>
 </div>
 @stop
@@ -179,147 +98,24 @@
 <script type="application/javascript">
 
   $(function () {
-    $('#srps').DataTable();
-    $('#srps-arch').DataTable();
+    $('#apps').DataTable();
+    $('#apps-arch').DataTable();
 
-    $('#srp-ping').on('show.bs.modal', function(e){
-        var link = '{{ route('srp.ping', 0) }}';
-        $(this).find('.overlay').show();
-        $(this).find('.modal-body>p').text('');
-
-        $.ajax({
-            url: link.replace('/0', '/' + $(e.relatedTarget).attr('data-kill-id')),
-            dataType: 'json',
-            method: 'GET'
-        }).done(function(response){
-            $('#srp-ping').find('.modal-body>p').text(response.note).removeClass('text-danger');
-        }).fail(function(jqXHR, status){
-            $('#srp-ping').find('.modal-body>p').text(status).addClass('text-danger');
-
-            if (jqXHR.statusCode() !== 500)
-                $('#srp-ping').find('.modal-body>p').text(jqXHR.responseJSON.msg);
-        });
-
-        $(this).find('.overlay').hide();
-    });
-
-    $('#srp-reason').on('show.bs.modal', function(e){
-                var link = '{{ route('srp.reason', 0) }}';
-
-                $(this).find('.overlay').show();
-                $(this).find('.modal-body>p').text('');
-
-                $.ajax({
-                    url: link.replace('/0', '/' + $(e.relatedTarget).attr('data-kill-id')),
-                    dataType: 'json',
-                    method: 'GET'
-                }).done(function(response){
-                    $('#srp-reason').find('.modal-body>p').text(response.note).removeClass('text-danger');
-                }).fail(function(jqXHR, status){
-                    $('#srp-reason').find('.modal-body>p').text(status).addClass('text-danger');
-
-                    if (jqXHR.statusCode() !== 500)
-                        $('#srp-reason').find('.modal-body>p').text(jqXHR.responseJSON.msg);
-                });
-
-                $(this).find('.overlay').hide();
-            });
-
-
-    $('#srp-reason-edit').on('show.bs.modal', function(e){
-        var link = '{{ route('srp.reason', 0) }}';
-
-        $(this).find('#reasonContent').text('');
-        $(this).find('#srpKillId').val($(e.relatedTarget).attr('data-kill-id'));
-    });
-
-    $('#insurances').on('show.bs.modal', function(e){
-        var link = '{{ route('srp.insurances', 0) }}';
-        var table = $('#insurances').find('table');
-
-        if (!$.fn.DataTable.isDataTable(table)) {
-            table.DataTable({
-                "ajax": {
-                    url: link.replace('/0', '/' + $(e.relatedTarget).attr('data-kill-id')),
-                    dataSrc: ''
-                },
-                "searching": false,
-                "ordering": true,
-                "info": false,
-                "paging": false,
-                "processing": true,
-                "order": [[2, "asc"]],
-                "columnDefs": [
-                    {
-                        "render": function(data, type, row) {
-                            return row.name;
-                        },
-                        "targets": 0
-                    },
-                    {
-                        "className": "text-right",
-                        "render": function(data, type, row) {
-                            return parseFloat(row.cost).toLocaleString(undefined, {
-                                "minimumFractionDigits": 2,
-                                "maximumFractionDigits": 2
-                            });
-                        },
-                        "targets": 1
-                    },
-                    {
-                        "className": "text-right",
-                        "render": function(data, type, row) {
-                            return parseFloat(row.payout).toLocaleString(undefined, {
-                                "minimumFractionDigits": 2,
-                                "maximumFractionDigits": 2
-                            });
-                        },
-                        "targets": 2
-                    },
-                    {
-                        "className": "text-right",
-                        "render": function(data, type, row) {
-                            return parseFloat(row.refunded).toLocaleString(undefined, {
-                                "minimumFractionDigits": 2,
-                                "maximumFractionDigits": 2
-                            });
-                        },
-                        "targets": 3
-                    },
-                    {
-                        "className": "text-right",
-                        "render": function(data, type, row) {
-                            return parseFloat(row.remaining).toLocaleString(undefined, {
-                                "minimumFractionDigits": 2,
-                                "maximumFractionDigits": 2
-                            });
-                        },
-                        "targets": 4
-                    }
-                ]
-            });
-        }
-    })
-    .on('hidden.bs.modal', function(e){
-        var table = $('#insurances').find('table').DataTable();
-        table.destroy();
-    });
-
-    $('#srps tbody').on('click', 'button', function(btn) {
+    $('#apps tbody').on('click', 'button', function(btn) {
         $.ajax({
           headers: function() {},
-          url: "{{ route('srpadmin.list') }}/" + btn.target.name + "/" + $(btn.target).text(),
+          url: "{{ route('application.list') }}/" + btn.target.name + "/" + $(btn.target).text(),
           dataType: 'json',
           timeout: 5000
         }).done(function (data) {
-          if (data.name === "Approve") {
-              $("#id-"+data.value).html('<span class="badge badge-success">Approved</span>');
+          if (data.name === "Accept") {
+              $("#id-"+data.value).html('<span class="badge badge-success">Accepted</span>');
           } else if (data.name === "Reject") {
               $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');
-          } else if (data.name === "Paid Out") {
-              $("#id-"+data.value).html('<span class="badge badge-primary">Paid Out</span>');
-          } else if (data.name === "Pending") {
-              $("#id-"+data.value).html('<span class="badge badge-warning">Pending</span>');
+          } else if (data.name === "Interview") {
+              $("#id-"+data.value).html('<span class="badge badge-primary">Ready For Interview</span>');
+          } else if (data.name === "Review") {
+              $("#id-"+data.value).html('<span class="badge badge-warning">Reviewing</span>');
           }
           $("#approver-"+data.value).html(data.approver);
         });
