@@ -6,7 +6,7 @@
 @section('full')
     <div class="card card-success">
         <div class="card-header">
-            <h3 class="card-title">New Pilot Application</h3>
+            <h3 class="card-title">New Application</h3>
         </div>
         <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal">
             <input type="hidden" name="app" value="{{ $request->id }}">
@@ -71,7 +71,24 @@
         </div>
     @endif
 @stop
-
+@section('right')
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Instructions</h3>
+        </div>
+            <div class="card-body">
+                <div class="box-body">
+                    <p>test 123 test 123 test 123 test 123 test 123</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group pull-right" role="group">
+                    <input type="submit" class="btn btn-primary" id="saveApp" value="{{ trans('application::application.submit') }}"/>
+                </div>
+                {{ csrf_field() }}
+            </div>
+    </div>
+@stop
 
 
 @push('head')
