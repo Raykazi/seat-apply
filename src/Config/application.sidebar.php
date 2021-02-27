@@ -1,40 +1,33 @@
-<?PHP 
-
+<?PHP
 return [
-	'srp' => [
-		'name' => 'Ship Replacement Program',
-		'icon' => 'fas fa-rocket',
-		'route_segment' => 'srp',
-		'permission' => 'srp.request',
+	'application' => [
+		'name' => 'Applications',
+		'icon' => 'fab fa-wpforms',
+		'route_segment' => 'application',
+		'permission' => 'application.apply',
 		'entries' => [
 			[
 				'name' => 'Apply',
-				'icon' => 'fas fa-medkit',
-				'route' => 'srp.request',
+				'icon' => 'fas fa-user-plus',
+				'route' => 'application.request',
 				'permission' => 'application.apply',
 			],
 			[
 				'name' => 'Applications',
-				'icon' => 'fas fa-gavel',
-				'route' => 'srpadmin.list',
+				'icon' => 'fas fa-user-tag',
+				'route' => 'application.list',
 				'permission' => 'application.recruiter',
 			],
-//            [
-//                'name' => 'Metrics',
-//                'icon' => 'fas fa-chart-bar',
-//                'route' => 'srp.metrics',
-//                'permission' => 'srp.settle',
-//			],
-//			[
-//                'name' => 'Instructions',
-//                'icon' => 'fas fa-book-open',
-//                'route' => 'srp.instructions',
-//                'permission' => 'srp.request',
-//			],
+            [
+                'name' => 'Questions',
+                'icon' => 'fas fa-question',
+                'route' => 'application.questions',
+                'permission' => 'application.director',
+            ],
 			[
                 'name' => 'About',
-                'icon' => 'fas fa-info',
-                'route' => 'srp.about',
+                'icon' => 'fas fa-dumpster-fire',
+                'route' => 'application.about',
                 'permission' => 'application.apply',
             ],
 		],

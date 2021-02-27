@@ -1,4 +1,4 @@
-@extends('web::layouts.grids.12')
+@extends('web::layouts.grids.6-6')
 
 @section('title', trans('application::application.apply'))
 @section('page_header', trans('application::application.apply'))

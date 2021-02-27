@@ -8,7 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SrpRequestSubmitted extends Notification
+class ApplicationSubmitted extends Notification
 {
     use Queueable;
     /**
@@ -34,14 +34,10 @@ class SrpRequestSubmitted extends Notification
 
     public function toDiscord($notifiable)
     {
-        return (new Discord)->post("```New SRP Request Received:```" .
+        return (new Discord)->post("```New Application Received:```" .
             "\t**Requested On:** $notifiable->created_at" .
-            "\n\t**Requested By:** " . $notifiable::join('users as u', 'user_id', 'u.id')
-                ->select('u.name')
-                ->first()->name .
-            "\n\t**Kill Mail for:** $notifiable->character_name" .
-            "\n\t**Ship Type:** $notifiable->ship_type" .
-            "\n\t**Cost:** " . number_format($notifiable->cost)
+            "\n\t**Applicant:** " . $notifiable::join('users as u', 'user_id', 'u.id')->select('u.name')->first()->name .
+            "\n\t**Applicant:** $notifiable->character_name"
         );
     }
 

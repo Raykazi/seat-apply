@@ -2,28 +2,24 @@
 
 namespace Raykazi\Seat\SeatApplication\Http\Controllers;
 
-use Raykazi\Seat\SeatApplication\Models\Sde\InvFlag;
-use Raykazi\Seat\SeatApplication\Models\Sde\InvType;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Seat\Services\Models\Note;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Eveapi\Models\Character\CharacterInfo;
-use Raykazi\Seat\SeatApplication\Models\KillMail;
+use Raykazi\Seat\SeatApplication\Models\ApplicationModel;
+use Raykazi\Seat\SeatApplication\Models\QuestionModel;
 use Raykazi\Seat\SeatApplication\Validation\AddKillMail;
 use stdClass;
 
 
-class SrpController extends Controller {
+class ApplicationController extends Controller {
 
-    public function srpGetRequests()
+    public function getMainPage()
     {
-        $kills = KillMail::where('user_id', auth()->user()->id)
-                         ->orderby('created_at', 'desc')
-                         ->take(20)
-                         ->get();
-
-        return view('srp::request', compact('kills'));
+        $application = ApplicationModel::where('user_id', auth()->user()->id)->get();
+        $questions = QuestionModel::query()->orderby('order', 'asc')->get();
+        return view('application::apply', compact("application", "questions"));
     }
 
     public function srpGetKillMail(Request $request)
@@ -43,7 +39,7 @@ class SrpController extends Controller {
     public function srpSaveKillMail(AddKillMail $request)
     {
 
-        KillMail::create([
+        ApplicationModel::create([
             'user_id'        => auth()->user()->id,
             'character_name' => $request->input('srpCharacterName'),
             'kill_id'        => $request->input('srpKillId'),
@@ -55,7 +51,7 @@ class SrpController extends Controller {
         ]);
 
         if (!is_null($request->input('srpPingContent')) && $request->input('srpPingContent') != '')
-        	KillMail::addNote($request->input('srpKillId'), 'ping', $request->input('srpPingContent'));
+        	ApplicationModel::addNote($request->input('srpKillId'), 'ping', $request->input('srpPingContent'));
 
         return redirect()->back()
                          ->with('success', trans('srp::srp.submitted'));
@@ -63,7 +59,7 @@ class SrpController extends Controller {
 
 	public function getInsurances($kill_id)
 	{
-		$killmail = KillMail::where('kill_id', $kill_id)->first();
+		$killmail = ApplicationModel::where('kill_id', $kill_id)->first();
 
 		if (is_null($killmail))
 			return response()->json(['msg' => sprintf('Unable to retried killmail %s', $kill_id)], 404);
@@ -87,7 +83,7 @@ class SrpController extends Controller {
 
 	public function getPing($kill_id)
 	{
-		$killmail = KillMail::find($kill_id);
+		$killmail = ApplicationModel::find($kill_id);
 
 		if (is_null($killmail))
 			return response()->json(['msg' => sprintf('Unable to retrieve kill %s', $kill_id)], 404);
@@ -100,7 +96,7 @@ class SrpController extends Controller {
     
     public function getReason($kill_id)
 	{
-		$killmail = KillMail::find($kill_id);
+		$killmail = ApplicationModel::find($kill_id);
 
 		if (is_null($killmail))
 			return response()->json(['msg' => sprintf('Unable to retrieve kill %s', $kill_id)], 404);
@@ -208,7 +204,7 @@ class SrpController extends Controller {
 
     public function getAboutView()
     {
-        return view("srp::about");
+        return view("application::about");
     }
 
     public function getInstructionsView()

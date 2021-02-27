@@ -34,7 +34,7 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
 
     public function add_translations()
     {
-        $this->loadTranslationsFrom(__DIR__ . '/lang', 'srp');
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'application');
     }
 
     /**
@@ -42,7 +42,7 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
      */
     public function add_views()
     {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'srp');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'application');
     }
 
     /**
@@ -112,7 +112,7 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
      */
     public function getName(): string
     {
-        return 'Applications';
+        return 'SeAT Apply';
     }
 
 
@@ -137,7 +137,7 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
      */
     public function getPackagistPackageName(): string
     {
-        return 'seat-application';
+        return 'seat-apply';
     }
 
     /**

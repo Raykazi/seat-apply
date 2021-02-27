@@ -13,11 +13,11 @@ class Discord
         if(!$url){
             return [500, 'APPLICATION_DISCORD_WEBHOOK_URL is not defined in .env'];
         }
-        $srp_role_mention = env('APPLICATION_DISCORD_MENTION_ROLE');
+        $role_mention = env('APPLICATION_DISCORD_MENTION_ROLE');
         $headers = [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'content' => ($srp_role_mention ? $srp_role_mention . $content : $content)
+                'content' => ($role_mention ? $role_mention . $content : $content)
             ],
         ];
         $request = new Requests();
