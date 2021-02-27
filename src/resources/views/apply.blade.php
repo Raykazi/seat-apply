@@ -15,12 +15,15 @@
                 <div class="form-group row">
                     <label for="mainCharacter" class="col-form-label col-md-4">Main Character</label>
                     <div class="col-md-8">
-                        <input id="mainCharacter" name="main"  style="width: 100%;" value="{{ auth()->user()->name }}" type="text" disabled>
+                        <input id="mainCharacter" name="main" class="form-control input-md"value="{{ auth()->user()->name }}" type="text" disabled>
                     </div>
+                </div>
+                <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
                     <div class="col-md-8">
-                        <input id="altCharacters" name="alts"  style="width: 100%;" value="" type="text">
+                        <input id="altCharacters" name="alts" class="form-control input-md" value="" type="text">
                     </div>
+                </div>
                     @foreach ($questions as $q)
                         <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{ $q->question }}</label>
                         <div class="col-md-8">
