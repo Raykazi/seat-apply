@@ -84,12 +84,6 @@
                     <p>test 123 test 123 test 123 test 123 test 123</p>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="btn-group pull-right" role="group">
-                    <input type="submit" class="btn btn-primary" id="saveApp" value="{{ trans('application::application.submit') }}"/>
-                </div>
-                {{ csrf_field() }}
-            </div>
     </div>
 </div>
 @stop
