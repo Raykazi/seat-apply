@@ -22,7 +22,7 @@
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
                         <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     <div class="col-md-8">
-                        <input id="altCharacters" name="alts" class="form-control input-md" value="" type="text">
+                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text">
                     </div>
                 </div>
                     @foreach ($questions as $q)
