@@ -55,11 +55,10 @@
             <div class="box-footer">
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label" for="submit"></label>
-                        <input type="submit" class="btn btn-primary" id="saveApp" value="{{ trans('application::application.submit') }}"/>
-                            <i class="fas fa-plus"></i>Submit</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i> Update
+                        </button>
                 </div>
-                </div
-                </div
                 {{ csrf_field() }}
             </div>
         </form>
