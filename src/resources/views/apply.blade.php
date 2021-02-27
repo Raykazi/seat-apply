@@ -1,10 +1,10 @@
-@extends('web::layouts.grids.6-6')
+@extends('web::layouts.grids.8-4')
 
 @section('title', trans('application::application.apply'))
 @section('page_header', trans('application::application.apply'))
 @inject('request', 'Illuminate\Http\Request')
 @section('left')
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card card-success">
         <div class="card-header">
             <h3 class="card-title">New Application</h3>
@@ -74,14 +74,14 @@
 </div>
 @stop
 @section('right')
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card card-info">
         <div class="card-header">
             <h3 class="card-title">Instructions</h3>
         </div>
             <div class="card-body">
                 <div class="box-body">
-                    <p>test 123 test 123 test 123 test 123 test 123</p>
+                    <p>test 123 test 123 test 123 test 123 </p>
                 </div>
             </div>
     </div>
