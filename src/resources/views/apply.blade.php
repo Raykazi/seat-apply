@@ -94,7 +94,21 @@
         </div>
             <div class="card-body">
                 <div class="box-body">
-                    <p>test 123 test 123 test 123 test 123 </p>
+                    <p>Fill out the application form with as little or as much detail as you think each question requires.</p>
+                    <h4>Process</h4>
+                        <ul>
+                            <li>Submit this application form</li>
+                            <li>Join our discord here: http://discord.com/invite/VV4Y38kur5</li>
+                            <li>We'll go over your application and if we like what we see, invite you to a voice chat on Discord</li>
+                            <li>After your chat on Discord, provided we're a good fit for each other we'll send you an invite to corp</li>
+                        </ul>
+                        <p>The whole process shouldn't take more than a couple of days, feel free to keep shopping around for corporations while you wait.</p>
+                    <h4>Tips</h4>
+                        <ul>
+                            <li>There are no wrong answers</li>
+                            <li>During the chat on Discord, you're welcome to ask lots of questions too!</li>
+                            <li>Killboard history isn't as important as you might think, don't stress about stats</li>
+                        </ul>   
                 </div>
             </div>
     </div>
