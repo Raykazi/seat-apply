@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="mainCharacter" class="col-form-label col-md-4">Main Character</label>
                     <div class="col-md-8">
-                        <input id="mainCharacter" name="main" class="form-control input-md"value="{{ auth()->user()->name }}" type="text" disabled>
+                        <input id="mainCharacter" name="main" class="form-control input-md" value="{{ auth()->user()->name }}" type="text" disabled>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -25,29 +25,31 @@
                     </div>
                 </div>
                     @foreach ($questions as $q)
+                    <div class="form-group row">
                         <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{ $q->question }}</label>
                         <div class="col-md-8">
                             @if($q->type == "text")
-                                <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}"  style="width: 100%;" value="" type="text">
+                                <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" value="" type="text">
 {{--                            @elseif($q->type == "radio") //TODO Unfuck this @Maj--}}
 {{--                                @foreach(explode(",", $q->options) as $opt)--}}
-{{--                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}"  style="width: 100%;" value="{{$opt}}" type="{{ $q->type }}">--}}
+{{--                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">--}}
 {{--                                    <label for="{{ $opt }}">{{ $opt }}</label>--}}
 {{--                                @endforeach--}}
                             @elseif($q->type == "select")
-                                <select id="type" name="question#{{ $q->qid }}" style="width: 100%;">
+                                <select id="type" name="question#{{ $q->qid }}">
                                 @foreach(explode(",", $q->options) as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                 @endforeach
                                 </select>
                             @elseif($q->type == "checkbox")
-                                <select id="type" name="question#{{ $q->qid }}" style="width: 100%;">
+                                <select id="type" name="question#{{ $q->qid }}">
                                     @foreach(explode(",", $q->options) as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                     @endforeach
                                 </select>
                             @endif
                         </div>
+                    </div>
                     @endforeach
                 </div>
             <div class="card-footer">
