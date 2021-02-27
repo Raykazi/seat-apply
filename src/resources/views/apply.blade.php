@@ -36,13 +36,13 @@
 {{--                                    <label for="{{ $opt }}">{{ $opt }}</label>--}}
 {{--                                @endforeach--}}
                             @elseif($q->type == "select")
-                                <select id="type" name="question#{{ $q->qid }}">
+                                <select id="type" name="question#{{ $q->qid }}" class="form-control input-md">
                                 @foreach(explode(",", $q->options) as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                 @endforeach
                                 </select>
                             @elseif($q->type == "checkbox")
-                                <select id="type" name="question#{{ $q->qid }}">
+                                <select id="type" name="question#{{ $q->qid }}" class="form-control input-md">
                                     @foreach(explode(",", $q->options) as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                     @endforeach
