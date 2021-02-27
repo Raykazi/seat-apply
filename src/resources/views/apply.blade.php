@@ -50,7 +50,6 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
             <div class="card-footer">
                 <div class="btn-group pull-right" role="group">
                     <input type="submit" class="btn btn-primary" id="saveApp" value="{{ trans('application::application.submit') }}"/>
