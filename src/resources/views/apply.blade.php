@@ -4,6 +4,7 @@
 @section('page_header', trans('application::application.apply'))
 @inject('request', 'Illuminate\Http\Request')
 @section('full')
+<div class="col-md-6">
     <div class="card card-success">
         <div class="card-header">
             <h3 class="card-title">New Application</h3>
@@ -70,8 +71,10 @@
             </div>
         </div>
     @endif
+</div>
 @stop
 @section('right')
+<div class="col-md-6">
     <div class="card card-info">
         <div class="card-header">
             <h3 class="card-title">Instructions</h3>
@@ -88,6 +91,7 @@
                 {{ csrf_field() }}
             </div>
     </div>
+</div>
 @stop
 
 
