@@ -1,4 +1,4 @@
-@extends('web::layouts.grids.8-4')
+@extends('web::layouts.grids.6-6')
 
 @section('title', trans('application::application.apply'))
 @section('page_header', trans('application::application.apply'))
@@ -12,6 +12,7 @@
         <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal">
             <input type="hidden" name="app" value="{{ $request->id }}">
             <div class="card-body">
+            <legend>Your Characters</legend>
                 <div class="form-group row">
                     <label for="mainCharacter" class="col-form-label col-md-4">Main Character</label>
                     <div class="col-md-8">
@@ -26,6 +27,7 @@
                     </div>
                 </div>
                     @foreach ($questions as $q)
+                    <legend>Eyy got another foreach for you</legend>
                     <div class="form-group row">
                         <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{ $q->question }}</label>
                         <div class="col-md-8">
