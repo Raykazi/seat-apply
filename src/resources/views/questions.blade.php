@@ -4,7 +4,7 @@
 @section('page_header', trans('application::application.questions'))
 @inject('request', 'Illuminate\Http\Request')
 @section('left')
-    <div class="card card-success">
+    <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Questions</h3>
         </div>
@@ -23,8 +23,10 @@
                         <td>{{ $q->order }} </td>
                         <td><span class='id-to-name' data-id="{{ $q->qid }}">{{ $q->question }}</span></td>
                         <td>
-                            <button type="button" class="btn btn-xs btn-warning app-status" id="app-status" name="{{ $q->qid }}">Edit</button>
-                            <button type="button" class="btn btn-xs btn-danger app-status" id="app-status" name="{{ $q->qid }}">Delete</button>
+                            <div class="btn-group btn-group-sm float-right">
+                                <button type="button" class="btn btn-warning app-status" id="app-status" name="{{ $q->qid }}">Edit</button>
+                                <button type="button" class="btn btn-danger app-status" id="app-status" name="{{ $q->qid }}">Delete</button>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -35,7 +37,7 @@
 @stop
 
 @section('right')
-    <div class="card card-primary">
+    <div class="card card-success">
         <div class="card-header">
             <h3 class="card-title">{{ trans('application::application.add_question') }}</h3>
         </div>
@@ -45,23 +47,28 @@
                 <div class="form-group row">
                     <label for="questionNumber" class="col-form-label col-md-4">Question #</label>
                     <div class="col-md-8">
-                        <input id="questionNumber" name="questionNumber"  style="width: 100%;" value="{{ count($questions)+1 }}" type="number">
+                        <input id="questionNumber" name="questionNumber" class="form-control" value="{{ count($questions)+1 }}" type="number">
+                        <p class="form-text text-muted mb-0">Questions are sorted by their number.</p>
                     </div>
                     <label for="questionInput" class="col-form-label col-md-4">Question</label>
                     <div class="col-md-8">
-                        <input id="questionInput" name="questionInput"  style="width: 100%;" value="Would you drown your kid?" type="text">
+                        <input id="questionInput" name="questionInput" class="form-control" value="" type="text">
+                        <p class="form-text text-muted mb-0">Use comma-separated values here.</p>
                     </div>
                     <label for="questionNumber" class="col-form-label col-md-4">Answer Type</label>
                     <div class="col-md-8">
-                        <select id="type" name="type" style="width: 100%;">
-                            <option value="select">Drop Down</option>
+                        <select id="type" name="type" class="form-control">
+                            <option value="select">Dropdown</option>
                             <option value="checkbox">Checkbox</option>
-                            <option value="text" selected>Text</option>
+                            <option value="text" selected>Textbox</option>
+                            <option value="multiline" selected>Multiline Textbox</option>
+                            <option value="header" selected>Header</option>
                         </select>
                     </div>
                     <label for="options" class="col-form-label col-md-4">Choices</label>
                     <div class="col-md-8">
-                        <input id="options" name="options"  style="width: 100%;" value="Separate via ," type="text">
+                        <input id="options" name="options" value="" type="text">
+                        <p class="form-text text-muted mb-0">Use comma-separated values here.</p>
                     </div>
                 </div>
             </div>
