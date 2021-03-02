@@ -9,7 +9,7 @@
             <h3 class="card-title">Questions</h3>
         </div>
         <div class="card-body">
-            <table id="apps" class="table table-bordered">
+            <table id="questions" class="table table-bordered">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -53,7 +53,7 @@
                     <label for="questionInput" class="col-form-label col-md-4">Question</label>
                     <div class="col-md-8">
                         <input id="questionInput" name="questionInput" class="form-control" value="" type="text">
-                        <p class="form-text text-muted mb-0">Use comma-separated values here.</p>
+                        <p class="form-text text-muted mb-0"></p>
                     </div>
                     <label for="questionNumber" class="col-form-label col-md-4">Answer Type</label>
                     <div class="col-md-8">
@@ -61,13 +61,13 @@
                             <option value="select">Dropdown</option>
                             <option value="checkbox">Checkbox</option>
                             <option value="text" selected>Textbox</option>
-                            <option value="multiline" selected>Multiline Textbox</option>
-                            <option value="header" selected>Header</option>
+                            <option value="multiline">Multiline Textbox</option>
                         </select>
+                        <p class="form-text text-muted mb-0"></p>
                     </div>
                     <label for="options" class="col-form-label col-md-4">Choices</label>
                     <div class="col-md-8">
-                        <input id="options" name="options" value="" type="text">
+                        <input id="options" name="options" value="" type="text" class="form-control">
                         <p class="form-text text-muted mb-0">Use comma-separated values here.</p>
                     </div>
                 </div>
@@ -84,4 +84,41 @@
 
 @push('head')
     <link rel="stylesheet" type="text/css" href="{{ asset('web/css/application-hook.css') }}" />
+@endpush
+@push('javascript')
+    @include('web::includes.javascript.id-to-name')
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <script type="application/javascript">
+
+        $(function () {
+            $('#questions').DataTable();
+
+            {{--$('#apps tbody').on('click', 'button', function(btn) {--}}
+            {{--    $.ajax({--}}
+            {{--        headers: function() {},--}}
+            {{--        url: "{{ route('application.list') }}/" + btn.target.name + "/" + $(btn.target).text(),--}}
+            {{--        dataType: 'json',--}}
+            {{--        timeout: 5000--}}
+            {{--    }).done(function (data) {--}}
+            {{--        if (data.name === "Accept") {--}}
+            {{--            $("#id-"+data.value).html('<span class="badge badge-success">Accepted</span>');--}}
+            {{--        } else if (data.name === "Reject") {--}}
+            {{--            $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');--}}
+            {{--        } else if (data.name === "Interview") {--}}
+            {{--            $("#id-"+data.value).html('<span class="badge badge-primary">Ready For Interview</span>');--}}
+            {{--        } else if (data.name === "Review") {--}}
+            {{--            $("#id-"+data.value).html('<span class="badge badge-warning">Reviewing</span>');--}}
+            {{--        }--}}
+            {{--        $("#approver-"+data.value).html(data.approver);--}}
+            {{--    });--}}
+            {{--});--}}
+
+        });
+    </script>
 @endpush
