@@ -75,7 +75,7 @@
             <div class="box-footer">
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label" for="submit"></label>
-                        <button type="submit" class="btn btn-success"></button>
+                        <button type="submit" class="btn btn-success">Add</button>
                 </div>
                 {{ csrf_field() }}
             </div>
