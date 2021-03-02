@@ -9,8 +9,8 @@
         <div class="card-header">
             <h3 class="card-title">New Application</h3>
         </div>
-        <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal">
-            <input type="hidden" name="app" value="{{ $request->id }}">
+        <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal" >
+            <input type="hidden" name="app" value="{{ auth()->user()->name }}">
             <div class="card-body">
             <legend>Your Characters</legend>
                 <div class="form-group row">
@@ -22,35 +22,39 @@
                 <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
                     <div class="col-md-8">
-                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text"></textarea>
+                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text" style="margin-top: 8px;"></textarea>
                         <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     </div>
                 </div>
                     @foreach ($questions as $q)
-                    <legend>Eyy got another foreach for you</legend>
                     <div class="form-group row">
                         <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{ $q->question }}</label>
+                        @if($q->type != "checkbox")
+                        @endif
                         <div class="col-md-8">
                             @if($q->type == "text")
-                                <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" value="" type="text">
-{{--                            @elseif($q->type == "radio") //TODO Unfuck this @Maj--}}
-{{--                                @foreach(explode(",", $q->options) as $opt)--}}
-{{--                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">--}}
-{{--                                    <label for="{{ $opt }}">{{ $opt }}</label>--}}
-{{--                                @endforeach--}}
+                                <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" style="margin-top: 8px;" value="" type="text">
+                            @elseif($q->type == "radio")
+                                @foreach(explode(",", $q->options) as $opt)
+                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">
+                                    <label for="{{ $opt }}">{{ $opt }}</label>
+                                @endforeach
                             @elseif($q->type == "select")
-                                <select id="type" name="question#{{ $q->qid }}" class="form-control input-md">
+                                <select id="type" name="question#{{ $q->qid }}" style="margin-top: 10px;" class="form-control input-md">
                                 @foreach(explode(",", $q->options) as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                 @endforeach
                                 </select>
                             @elseif($q->type == "checkbox")
-                                <select id="type" name="question#{{ $q->qid }}" class="form-control input-md">
+                                <fieldset>
                                     @foreach(explode(",", $q->options) as $opt)
-                                        <option value="{{ $opt }}">{{ $opt }}</option>
+                                        <input type="checkbox" style="margin-left: 10px; margin-top: 10px;" name="question#{{ $q->qid }}" value="{{ $opt }}"> {{ $opt }}
                                     @endforeach
-                                </select>
+                                </fieldset>
+                            @elseif($q->type == "multiline")
+                                <textarea id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" rows="3" value="" type="text" style="margin-top: 8px;"></textarea>
                             @endif
+
                             @if($q->hint)
                                 <p class="form-text text-muted mb-0">{{$q->hint}}</p>
                             @endif
@@ -68,21 +72,19 @@
                 {{ csrf_field() }}
             </div>
         </form>
-        @if($application == null)
+        @if(count($application)>0)
             <div class="overlay">
                 <i class="fa fa-refresh fa-spin"></i>
             </div>
         @endif
+{{--        @if($application == null)--}}
+{{--            <div class="overlay">--}}
+{{--                <i class="fa fa-refresh fa-spin"></i>--}}
+{{--            </div>--}}
+{{--        @endif--}}
     </div>
-    @if($application == null || auth()->user()->name  == "Ray Instapop")
+    @if($application == null)
     @else
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">{{ trans('application::application.app_status') }}</h3>
-            </div>
-            <div class="card-body">
-            </div>
-        </div>
     @endif
 </div>
 @stop
@@ -98,7 +100,7 @@
                     <h4>Process</h4>
                         <ul>
                             <li>Submit this application form</li>
-                            <li>Join our discord here: http://discord.com/invite/VV4Y38kur5</li>
+                            <li>Join our discord here: <a href="http://discord.com/invite/VV4Y38kur5">http://discord.com/invite/VV4Y38kur5</a></li>
                             <li>We'll go over your application and if we like what we see, invite you to a voice chat on Discord</li>
                             <li>After your chat on Discord, provided we're a good fit for each other we'll send you an invite to corp</li>
                         </ul>
@@ -112,6 +114,41 @@
                 </div>
             </div>
     </div>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">{{ trans('application::application.app_status') }}</h3>
+        </div>
+        <div class="card-body">
+            @if(count($application) == 0)
+                <p> Nothing to see here.</p>
+            @else
+                @switch($application[0]->status)
+                    @case(-1)
+                        <img src="{{ asset('web/img/sad-pepe.png') }}" width="128" height="128">
+                        <p>Sorry bud</p>
+                    @break;
+                    @case(0)
+                        <p> Currently pending</p>
+                    @break;
+                    @case(1)
+                        <p> Currently reviewing your application</p>
+                    @break;
+                    @case(2)
+                        <p> Join discord for your group interview.</p>
+                    @break;
+                    @case(3)
+                        <p> Welcome to the Windrammers</p>
+                    @break;
+                @endswitch
+            @endif
+
+        </div>
+        @if(count($application) == 0)
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
+        @endif
+    </div>
 </div>
 @stop
 
@@ -121,5 +158,6 @@
 @endpush
 @push('javascript')
 <script type="application/javascript">
+    $('.overlay').show();
 </script>
 @endpush

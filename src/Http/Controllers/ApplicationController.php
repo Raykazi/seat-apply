@@ -9,7 +9,7 @@ use Seat\Web\Http\Controllers\Controller;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Raykazi\Seat\SeatApplication\Models\ApplicationModel;
 use Raykazi\Seat\SeatApplication\Models\QuestionModel;
-use Raykazi\Seat\SeatApplication\Validation\AddKillMail;
+use Raykazi\Seat\SeatApplication\Validation\AddApplication;
 use stdClass;
 
 
@@ -36,8 +36,37 @@ class ApplicationController extends Controller {
         return response()->json($totalKill);
     }
 
-    public function srpSaveKillMail(AddKillMail $request)
+    public function submitApp(AddApplication $request)
     {
+        $questions = QuestionModel::query()->orderby('order', 'asc')->get();
+        $responses = array();
+        $responses["Alt Characters"] =  $request->input('alts');
+        foreach ($questions as $q)
+        {
+            $responses[$q->question] = $request->input('question#'.$q->qid);
+        }
+
+        ApplicationModel::create([
+            'user_id'        => auth()->user()->id,
+            'character_name' => $request->input('app'),
+            'responses'     => json_encode($responses),
+            'status'       => 0,
+            'approver'           => "None",
+        ]);
+
+
+        return redirect()->back()
+            ->with('success', trans('application::application.submitted'));
+    }
+
+    public function submitQuestion(AddApplication $request)
+    {
+        $questions = QuestionModel::query()->orderby('order', 'asc')->get();
+        $responses = array();
+        foreach ($questions as $q)
+        {
+            $responses[$q->qid] = $request->input('question#'.$q->qid);
+        }
 
         ApplicationModel::create([
             'user_id'        => auth()->user()->id,
@@ -50,11 +79,9 @@ class ApplicationController extends Controller {
             'ship_type'      => $request->input('srpShipType')
         ]);
 
-        if (!is_null($request->input('srpPingContent')) && $request->input('srpPingContent') != '')
-        	ApplicationModel::addNote($request->input('srpKillId'), 'ping', $request->input('srpPingContent'));
 
         return redirect()->back()
-                         ->with('success', trans('srp::srp.submitted'));
+                         ->with('success', trans('application::application.submitted'));
     }
 
 	public function getInsurances($kill_id)

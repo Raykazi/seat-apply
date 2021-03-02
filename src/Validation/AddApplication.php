@@ -1,10 +1,11 @@
 <?PHP
 
-namespace Raykazi\Seat\SeatSrp\Validation;
+namespace Raykazi\Seat\SeatApplication\Validation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Raykazi\Seat\SeatApplication\Models\QuestionModel;
 
-class AddKillMail extends FormRequest
+class AddApplication extends FormRequest
 {
 
     public function authorize()
@@ -14,15 +15,16 @@ class AddKillMail extends FormRequest
 
     public function rules()
     {
-        return [
-            'srpCharacterName' => 'required|string',
-            'srpKillId' => 'unique:seat_srp_srp,kill_id|required|integer',
-            'srpKillToken' => 'required|string',
-            'srpCost' => 'numeric',
-            'srpShipType' => 'string',
-            'srpTypeId' => 'required|integer',
-            'srpPingContent' => 'nullable|string'
-        ];
+        $questions = QuestionModel::query()->orderby('order', 'asc')->get();
+        $rules = array(
+            'altCharacters' => 'nullable|string');
+        foreach ($questions as $q)
+        {
+            $keyName = "question#".$q->qid;
+            $value = 'required|string';
+            $rules[$keyName] = $value;
+        }
+        return $rules;
     }
 }
 
