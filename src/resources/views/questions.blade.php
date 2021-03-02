@@ -9,11 +9,11 @@
             <h3 class="card-title">Questions</h3>
         </div>
         <div class="card-body">
-            <table id="questions" class="table table-bordered">
+            <table id="questions" class="table table-striped">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Question</th>
+                    <th>Questions</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -45,7 +45,7 @@
             <input type="hidden" name="id" value="{{ $request->id }}">
             <div class="card-body">
                 <div class="form-group row">
-                    <label for="questionNumber" class="col-form-label col-md-4">Question #</label>
+                    <label for="questionNumber" class="col-form-label col-md-4">Question Number</label>
                     <div class="col-md-8">
                         <input id="questionNumber" name="questionNumber" class="form-control" value="{{ count($questions)+1 }}" type="number">
                         <p class="form-text text-muted mb-0">Questions are sorted by their number.</p>
@@ -72,9 +72,10 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="btn-group pull-right" role="group">
-                    <input type="submit" class="btn btn-primary" id="saveQuestion" value="{{ trans('application::application.submit') }}"/>
+            <div class="box-footer">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="submit"></label>
+                        <button type="submit" class="btn btn-success"></button>
                 </div>
                 {{ csrf_field() }}
             </div>
