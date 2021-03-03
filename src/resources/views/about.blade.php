@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
 
-     <p>This plugin provides a very simple yet powerful functionality to have nerds apply to your corporation.</p>
+     <p>This plugin provides a handy way to have players apply to your corporation.</p>
 
     </div>
   </div>

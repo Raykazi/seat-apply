@@ -9,7 +9,7 @@
         <div class="card-header">
             <h3 class="card-title">New Application</h3>
         </div>
-        <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal" >
+        <form role="form" action="{{ route('application.submitApp') }}" method="post" class="form-horizontal">
             <input type="hidden" name="app" value="{{ auth()->user()->name }}">
             <div class="card-body">
             <legend>Your Characters</legend>
@@ -48,7 +48,10 @@
                             @elseif($q->type == "checkbox")
                                 <fieldset>
                                     @foreach(explode(",", $q->options) as $opt)
-                                        <input type="checkbox" style="margin-left: 10px; margin-top: 10px;" name="question#{{ $q->qid }}" value="{{ $opt }}"> {{ $opt }}
+					<div class="form-check" style="margin-top: 10px;">
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox{{ $opt }}" value="{{ $opt }}">
+						<label class="form-check-label" for="inlineCheckbox{{ $opt }}">{{ $opt }}</label>
+					</div>
                                     @endforeach
                                 </fieldset>
                             @elseif($q->type == "multiline")
@@ -62,13 +65,10 @@
                     </div>
                     @endforeach
                 </div>
-            <div class="box-footer">
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="submit"></label>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check"></i> Submit
+            <div class="card-footer">
+                        <button type="submit" class="btn btn-success float-right">
+                            <i class="fas fa-check"></i> Apply
                         </button>
-                </div>
                 {{ csrf_field() }}
             </div>
         </form>
@@ -120,24 +120,29 @@
         </div>
         <div class="card-body">
             @if(count($application) == 0)
-                <p> Nothing to see here.</p>
+                <h3><span class="badge badge-danger">Nothing</span></h3>
+		<p>Ray what is dis</p>
             @else
                 @switch($application[0]->status)
                     @case(-1)
-                        <img src="{{ asset('web/img/sad-pepe.png') }}" width="128" height="128">
-                        <p>Sorry bud</p>
+                        <p><span class="badge badge-warning">Denied</span></p>
+			<p>Your application to Windrammers was denied. We've most likely sent you the reasoning for this via Discord - Feel free to contact us if you have any questions.</p>
                     @break;
                     @case(0)
-                        <p> Currently pending</p>
+                        <p><span class="badge badge-default">Pending</span></p>
+			<p>We've got your application and we're ready to take a look. This process shouldn't take more than 24 hours. Please make sure you're on our Discord!</p>
                     @break;
                     @case(1)
-                        <p> Currently reviewing your application</p>
+                        <p><span class="badge badge-info">Reviewing</span></p>
+			<p>We're currently going over your application, if we have any questions we'll message you via Discord.</p>
                     @break;
                     @case(2)
-                        <p> Join discord for your group interview.</p>
+                        <p><span class="badge badge-warning">Awaiting Interview</span></p>
+			<p>We would love a voice chat with you on Discord, just a casual chat to make sure we're both looking for the same things.</p>
                     @break;
                     @case(3)
-                        <p> Welcome to the Windrammers</p>
+                        <p><span class="badge badge-success">Successful</span></p>
+			<p>Welcome to Windrammers! Please check the Windrammers Discord for instructions.</p>
                     @break;
                 @endswitch
             @endif
