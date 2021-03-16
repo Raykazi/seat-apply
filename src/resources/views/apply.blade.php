@@ -22,40 +22,44 @@
                 <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
                     <div class="col-md-8">
-                        <textarea id="altCharacters" name="alts" class="form-control input-md" rows="3" value="" type="text" style="margin-top: 8px;"></textarea>
+                        <textarea id="altCharacters" name="altCharacters" class="form-control input-md" rows="3" style="margin-top: 8px;">{{ old('altCharacters') }}</textarea>
                         <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     </div>
                 </div>
                     @foreach ($questions as $q)
                     <div class="form-group row">
-                        <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{ $q->question }}</label>
+                        <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{$q->order}}. {{ $q->question }}</label>
                         @if($q->type != "checkbox")
                         @endif
                         <div class="col-md-8">
                             @if($q->type == "text")
-                                <input id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" style="margin-top: 8px;" value="" type="text">
+                                <input id="q-{{ $q->qid }}" name="#{{ $q->order }}" class="form-control input-md" style="margin-top: 8px;" value="{{ old('#'.$q->order) }}" type="text">
                             @elseif($q->type == "radio")
                                 @foreach(explode(",", $q->options) as $opt)
-                                    <input id="{{ $opt }}" name="question#{{ $q->qid }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">
+                                    <input id="{{ $opt }}" name="#{{ $q->order }}" class="form-control input-md" value="{{$opt}}" type="{{ $q->type }}">
                                     <label for="{{ $opt }}">{{ $opt }}</label>
                                 @endforeach
                             @elseif($q->type == "select")
-                                <select id="type" name="question#{{ $q->qid }}" style="margin-top: 10px;" class="form-control input-md">
-                                @foreach(explode(",", $q->options) as $opt)
-                                        <option value="{{ $opt }}">{{ $opt }}</option>
+                                <select id="type" name="#{{ $q->order }}" style="margin-top: 10px;" class="form-control input-md">
+                                @foreach(explode(",", $q->options) as $opt){{ $opt }}
+                                        @if(old('#'.$q->order) === $opt)
+                                            <option value="{{ $opt }} selected">{{ $opt }}</option>
+                                        @else
+                                            <option value="{{ $opt }}">{{ $opt }}</option>
+                                        @endif
                                 @endforeach
                                 </select>
                             @elseif($q->type == "checkbox")
                                 <fieldset>
                                     @foreach(explode(",", $q->options) as $opt)
-					<div class="form-check" style="margin-top: 10px;">
-						<input class="form-check-input" type="checkbox" id="inlineCheckbox{{ $opt }}" value="{{ $opt }}">
-						<label class="form-check-label" for="inlineCheckbox{{ $opt }}">{{ $opt }}</label>
-					</div>
+                                    <div class="form-check" style="margin-top: 10px;">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox{{ $opt }}" name="#{{ $q->order }}" value="{{ $opt }}">
+                                        <label class="form-check-label" for="inlineCheckbox{{ $opt }}">{{ $opt }}</label>
+                                    </div>
                                     @endforeach
                                 </fieldset>
                             @elseif($q->type == "multiline")
-                                <textarea id="q-{{ $q->qid }}" name="question#{{ $q->qid }}" class="form-control input-md" rows="3" value="" type="text" style="margin-top: 8px;"></textarea>
+                                <textarea id="q-{{ $q->qid }}" name="#{{ $q->order }}" class="form-control input-md" rows="3"  style="margin-top: 8px;">{{ old('#'.$q->order) }}</textarea>
                             @endif
 
                             @if($q->hint)
@@ -77,15 +81,7 @@
                 <i class="fa fa-refresh fa-spin"></i>
             </div>
         @endif
-{{--        @if($application == null)--}}
-{{--            <div class="overlay">--}}
-{{--                <i class="fa fa-refresh fa-spin"></i>--}}
-{{--            </div>--}}
-{{--        @endif--}}
     </div>
-    @if($application == null)
-    @else
-    @endif
 </div>
 @stop
 @section('right')
@@ -95,22 +91,8 @@
             <h3 class="card-title">Instructions</h3>
         </div>
             <div class="card-body">
-                <div class="box-body">
-                    <p>Fill out the application form with as little or as much detail as you think each question requires.</p>
-                    <h4>Process</h4>
-                        <ul>
-                            <li>Submit this application form</li>
-                            <li>Join our discord here: <a href="http://discord.com/invite/VV4Y38kur5">http://discord.com/invite/VV4Y38kur5</a></li>
-                            <li>We'll go over your application and if we like what we see, invite you to a voice chat on Discord</li>
-                            <li>After your chat on Discord, provided we're a good fit for each other we'll send you an invite to corp</li>
-                        </ul>
-                        <p>The whole process shouldn't take more than a couple of days, feel free to keep shopping around for corporations while you wait.</p>
-                    <h4>Tips</h4>
-                        <ul>
-                            <li>There are no wrong answers</li>
-                            <li>During the chat on Discord, you're welcome to ask lots of questions too!</li>
-                            <li>Killboard history isn't as important as you might think, don't stress about stats</li>
-                        </ul>   
+                <div class="box-body instructions">
+                    {{print($instruction[0]->instructions)}}
                 </div>
             </div>
     </div>
@@ -164,5 +146,6 @@
 @push('javascript')
 <script type="application/javascript">
     $('.overlay').show();
+    $('.instructions').value.replace()
 </script>
 @endpush
