@@ -33,6 +33,11 @@ class ApplicationAdminController extends Controller
         $questions = QuestionModel::find($qid);
         return response()->json($questions);
     }
+    public function deleteQuestion($qid)
+    {
+        $questions = QuestionModel::where('qid', '=', $qid)->delete();
+        return response()->json($questions);
+    }
     public function submitQuestion(Request $request)
     {
         $rules = array(

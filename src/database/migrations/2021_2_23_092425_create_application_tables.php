@@ -24,12 +24,16 @@ class CreateApplicationTables extends Migration
             $table->timestamps();
             $table->primary(['user_id', 'application_id']);
         });
+        Schema::create('seat_application_instructions', function (Blueprint $table) {
+            $table->string('instructions');
+        });
         Schema::create('seat_application_questions', function (Blueprint $table) {
             $table->integer('qid');
             $table->integer('order');
             $table->string('question');
             $table->string('type');
             $table->string('options');
+            $table->string('required');
             $table->primary(['qid']);
         });
     }
