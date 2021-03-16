@@ -46,5 +46,11 @@ Route::group([
             'uses' => 'ApplicationAdminController@updateApplication',
             'middleware' => 'can:application.recruiter'
         ])->where(['action' => 'Accept|Reject|Interview|Review']);
+
+        Route::get('/question/{qid}', [
+            'as' => 'application.question',
+            'uses' => 'ApplicationAdminController@getQuestion',
+            'middleware' => 'can:application.director',
+        ]);
     });
 });

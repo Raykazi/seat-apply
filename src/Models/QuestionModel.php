@@ -1,9 +1,4 @@
 <?php
-/**
- * User: Warlof Tutsimo <loic.leuilliot@gmail.com>
- * Date: 01/12/2017
- * Time: 20:42
- */
 
 namespace Raykazi\Seat\SeatApplication\Models;
 
@@ -19,7 +14,7 @@ class QuestionModel extends Model {
     use NotableTrait;
     use Notifiable;
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $primaryKey = 'qid';
 
