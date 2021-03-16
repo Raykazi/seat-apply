@@ -7,8 +7,11 @@ use Raykazi\Seat\SeatApplication\Notifications\Webhooks\Discord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
-class ApplicationSubmitted extends Notification
+class ApplicationSubmitted extends AbstractNotification
 {
     use Queueable;
     /**
@@ -18,7 +21,6 @@ class ApplicationSubmitted extends Notification
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -29,16 +31,16 @@ class ApplicationSubmitted extends Notification
      */
     public function via($notifiable)
     {
-        return [DiscordChannel::class];
+        return ['slack'];
     }
-
-    public function toDiscord($notifiable)
+    public function toSlack($notifiable)
     {
-        return (new Discord)->post("```New Application Received:```" .
-            "\t**Requested On:** $notifiable->created_at" .
-            "\n\t**Applicant:** " . $notifiable::join('users as u', 'user_id', 'u.id')->select('u.name')->first()->name .
-            "\n\t**Applicant:** $notifiable->character_name"
-        );
+        $message = (new SlackMessage)
+            ->content('A nerd wants to join your corporation!')
+            ->from('SeAT Applications', $this->typeIconUrl('https://zkillboard.com/img/wreck.png'));
+
+
+        return $message;
     }
 
 

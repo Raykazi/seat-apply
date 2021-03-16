@@ -33,12 +33,12 @@ Route::group([
 
         Route::post('/submitApp', [
             'as'   => 'application.submitApp',
-            'uses' => 'ApplicationAdminController@srpSaveKillMail',
+            'uses' => 'ApplicationController@submitApp',
             'middleware' => 'can:application.apply'
         ]);
         Route::post('/submitQuestion', [
             'as'   => 'application.submitQuestion',
-            'uses' => 'ApplicationAdminController@srpSaveKillMail',
+            'uses' => 'ApplicationAdminController@submitQuestion',
             'middleware' => 'can:application.director'
         ]);
         Route::get('/admin/{application_id}/{action}', [
@@ -46,5 +46,11 @@ Route::group([
             'uses' => 'ApplicationAdminController@updateApplication',
             'middleware' => 'can:application.recruiter'
         ])->where(['action' => 'Accept|Reject|Interview|Review']);
+
+        Route::get('/question/{qid}', [
+            'as' => 'application.question',
+            'uses' => 'ApplicationAdminController@getQuestion',
+            'middleware' => 'can:application.director',
+        ]);
     });
 });

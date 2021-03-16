@@ -12,6 +12,7 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
      */
     public function boot()
     {
+        $this->add_alerts();
         $this->addCommands();
         $this->add_routes();
         // $this->add_middleware($router);
@@ -20,8 +21,18 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
         $this->add_migrations();
         $this->add_translations();
         $this->apply_custom_configuration();
+        $this->add_events();
     }
+    private function add_alerts()
+    {
+        $this->publishes([
+            __DIR__ . '/Config/application.alerts.php' => config_path('application.alerts.php'),
+        ], ['config', 'seat']);
+    }
+    private function add_events()
+    {
 
+    }
     /**
      * Include the routes.
      */

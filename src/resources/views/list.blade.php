@@ -5,7 +5,7 @@
 @section('page_header', trans('application::application.apps'))
 
 @section('full')
-    <div class="card card-primary card-solid">
+    <div class="card card-solid">
         <div class="card-header">
             <h3 class="card-title">Applications</h3>
         </div>
@@ -14,11 +14,11 @@
             <ul class="nav nav-tabs">
               <li class="active nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
               <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Completed</a></li>
-            </ul>
+            </ul><br>
 
           <div class="tab-content">
           <div class="tab-pane active" id="tab_1">
-          <table id="apps" class="table table-bordered">
+          <table id="apps" class="table table-striped">
             <thead>
                 <tr>
                   <th>ID</th>
@@ -63,7 +63,7 @@
           </table>
         </div>
           <div class="tab-pane" id="tab_2">
-          <table id="srps-arch" class="table table-bordered">
+          <table id="srps-arch" class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -78,10 +78,6 @@
         </div>
         </div>
           </div>
-    </div>
-
-    <div class="card-footer text-muted">
-        Plugin maintained by <a href="{{ route('application.about') }}"> {!! img('characters', 'portrait', 94819809, 64, ['class' => 'img-circle eve-icon small-icon']) !!} Raykaze Jenkins</a>. <span class="float-right snoopy" style="color: #fa3333;"><i class="fas fa-signal"></i></span>
     </div>
 </div>
 @stop

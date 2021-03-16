@@ -3,13 +3,14 @@
 namespace Raykazi\Seat\SeatApplication\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
 use Seat\Services\Models\Note;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Raykazi\Seat\SeatApplication\Models\ApplicationModel;
 use Raykazi\Seat\SeatApplication\Models\QuestionModel;
-use Raykazi\Seat\SeatApplication\Validation\AddKillMail;
+use Raykazi\Seat\SeatApplication\Models\InstructionModel;
 use stdClass;
 
 
@@ -19,42 +20,44 @@ class ApplicationController extends Controller {
     {
         $application = ApplicationModel::where('user_id', auth()->user()->id)->get();
         $questions = QuestionModel::query()->orderby('order', 'asc')->get();
-        return view('application::apply', compact("application", "questions"));
+        $instruction = InstructionModel::query()->get();
+        return view('application::apply', compact("application", "questions", "instruction"));
     }
 
-    public function srpGetKillMail(Request $request)
+    public function submitApp(Request $request)
     {
-        $totalKill = [];
-
-        $response = (new Client())->request('GET', $request->km);
-
-        $killMail = json_decode($response->getBody());
-        $totalKill = array_merge($totalKill, $this->srpPopulateSlots($killMail));
-        preg_match('/([a-z0-9]{35,42})/', $request->km, $tokens);
-        $totalKill['killToken'] = $tokens[0];
-
-        return response()->json($totalKill);
-    }
-
-    public function srpSaveKillMail(AddKillMail $request)
-    {
+        $questions = QuestionModel::query()->orderby('order', 'asc')->get();
+        $responses = array();
+        $rules = array(
+            'altCharacters' => 'nullable|string');
+        foreach ($questions as $q)
+        {
+            $keyName = "#".$q->order;
+            if($q->required =="No")
+                $value = 'nullable|string';
+            else
+                $value = 'required|string';
+            $rules[$keyName] = $value;
+            $responses[$q->question] = $request->input($keyName);
+        }
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect(route('application.request'))
+                ->withErrors($validator)
+                ->withInput($request->all);
+        }
+        $responses["Alt Characters"] =  $request->input('altCharacters');
 
         ApplicationModel::create([
-            'user_id'        => auth()->user()->id,
-            'character_name' => $request->input('srpCharacterName'),
-            'kill_id'        => $request->input('srpKillId'),
-            'kill_token'     => $request->input('srpKillToken'),
-            'approved'       => 0,
-            'cost'           => $request->input('srpCost'),
-            'type_id'        => $request->input('srpTypeId'),
-            'ship_type'      => $request->input('srpShipType')
+            'user_id'           => auth()->user()->id,
+            'character_name'    => $request->input('app'),
+            'responses'         => json_encode($responses),
+            'status'            => 0,
+            'approver'          => "None",
         ]);
 
-        if (!is_null($request->input('srpPingContent')) && $request->input('srpPingContent') != '')
-        	ApplicationModel::addNote($request->input('srpKillId'), 'ping', $request->input('srpPingContent'));
 
-        return redirect()->back()
-                         ->with('success', trans('srp::srp.submitted'));
+        return redirect()->back()->with('success', trans('application::application.submitted'));
     }
 
 	public function getInsurances($kill_id)
