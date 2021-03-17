@@ -18,9 +18,6 @@
                 </tr>
                 </thead>
                 <tbody>
-{{--                <button type="button" class="btn btn-xs btn-link" data-toggle="modal" data-target="#apply-edit-question" data-kill-id="{{ $kill->kill_id }}">--}}
-{{--                    {{ number_format($kill->cost, 2) }} ISK--}}
-{{--                </button>--}}
                 @foreach ($questions as $q)
                     <tr>
                         <td>{{ $q->order }} </td>
@@ -203,37 +200,12 @@
                             $('#apply-edit-question').find('#questionType option:eq(3)').prop('selected', true);
                             break;
                     }
-                    // $('#apply-edit-question').find('.modal-body>p').text(response.qid).removeClass('text-danger');
                 }).fail(function(jqXHR, status){
                     alert(jqXHR);
-                    // $('#apply-edit-question').find('.modal-body>p').text(status).addClass('text-danger');
-                    //
-                    // if (jqXHR.statusCode() !== 500)
-                    //     $('#srp-ping').find('.modal-body>p').text(jqXHR.responseJSON.msg);
                 });
 
                 $(this).find('.overlay').hide();
             });
-
-            {{--$('#apps tbody').on('click', 'button', function(btn) {--}}
-            {{--    $.ajax({--}}
-            {{--        headers: function() {},--}}
-            {{--        url: "{{ route('application.list') }}/" + btn.target.name + "/" + $(btn.target).text(),--}}
-            {{--        dataType: 'json',--}}
-            {{--        timeout: 5000--}}
-            {{--    }).done(function (data) {--}}
-            {{--        if (data.name === "Accept") {--}}
-            {{--            $("#id-"+data.value).html('<span class="badge badge-success">Accepted</span>');--}}
-            {{--        } else if (data.name === "Reject") {--}}
-            {{--            $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');--}}
-            {{--        } else if (data.name === "Interview") {--}}
-            {{--            $("#id-"+data.value).html('<span class="badge badge-primary">Ready For Interview</span>');--}}
-            {{--        } else if (data.name === "Review") {--}}
-            {{--            $("#id-"+data.value).html('<span class="badge badge-warning">Reviewing</span>');--}}
-            {{--        }--}}
-            {{--        $("#approver-"+data.value).html(data.approver);--}}
-            {{--    });--}}
-            {{--});--}}
 
         });
     </script>
