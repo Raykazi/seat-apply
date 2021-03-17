@@ -96,46 +96,39 @@
                 </div>
             </div>
     </div>
+    @if(count($application) != 0)
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">{{ trans('application::application.app_status') }}</h3>
         </div>
         <div class="card-body">
-            @if(count($application) == 0)
-                <h3><span class="badge badge-danger">Nothing</span></h3>
-		<p>Ray what is dis</p>
-            @else
                 @switch($application[0]->status)
                     @case(-1)
-                        <p><span class="badge badge-warning">Denied</span></p>
-			<p>Your application to Windrammers was denied. We've most likely sent you the reasoning for this via Discord - Feel free to contact us if you have any questions.</p>
+
+                    <p><img src="web/img/sad-pepe.png" width="128" height="128"><br><span class="badge badge-error">Denied</span></p>
+                    <p>Your application to Windrammers was denied. We've most likely sent you the reasoning for this via Discord - Feel free to contact us if you have any questions.</p>
                     @break;
                     @case(0)
-                        <p><span class="badge badge-default">Pending</span></p>
-			<p>We've got your application and we're ready to take a look. This process shouldn't take more than 24 hours. Please make sure you're on our Discord!</p>
+                    <p><span class="badge badge-default">Pending</span></p>
+                    <p>We've got your application and we're ready to take a look. This process shouldn't take more than 24 hours. Please make sure you're on our Discord!</p>
                     @break;
                     @case(1)
-                        <p><span class="badge badge-info">Reviewing</span></p>
-			<p>We're currently going over your application, if we have any questions we'll message you via Discord.</p>
+                    <p><span class="badge badge-info">Reviewing</span></p>
+                    <p>We're currently going over your application, if we have any questions we'll message you via Discord.</p>
                     @break;
                     @case(2)
-                        <p><span class="badge badge-warning">Awaiting Interview</span></p>
-			<p>We would love a voice chat with you on Discord, just a casual chat to make sure we're both looking for the same things.</p>
+                    <p><span class="badge badge-warning">Awaiting Interview</span></p>
+                    <p>We would love a voice chat with you on Discord, just a casual chat to make sure we're both looking for the same things.</p>
                     @break;
                     @case(3)
-                        <p><span class="badge badge-success">Successful</span></p>
-			<p>Welcome to Windrammers! Please check the Windrammers Discord for instructions.</p>
+                    <p><span class="badge badge-success">Successful</span></p>
+                    <p>Welcome to Windrammers! Please check the Windrammers Discord for instructions.</p>
                     @break;
                 @endswitch
-            @endif
 
         </div>
-        @if(count($application) == 0)
-            <div class="overlay">
-                <i class="fa fa-refresh fa-spin"></i>
-            </div>
-        @endif
     </div>
+    @endif
 </div>
 @stop
 
