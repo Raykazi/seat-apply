@@ -2,24 +2,32 @@
 
 namespace Raykazi\Seat\SeatApplication\Notifications;
 
-use Raykazi\Seat\SeatApplication\Notifications\Channels\DiscordChannel;
-use Raykazi\Seat\SeatApplication\Notifications\Webhooks\Discord;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\SlackAttachmentField;
+use Illuminate\Notifications\Messages\SlackMessage;
+use Raykazi\Seat\SeatApplication\Models\ApplicationModel;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
+use Illuminate\Support\Facades\Log;
 
-class ApplicationUpdated extends Notification
+class ApplicationUpdated extends AbstractNotification
 {
-    use Queueable;
+    use NotificationTools;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    private $application;
+    private $thumb;
+    private $role;
+    private $status;
+    public function __construct(ApplicationModel $application)
     {
-        //
+        $this->application = $application;
+        $this->thumb = (new \Seat\Services\Image\Eve('characters', 'portrait', $this->application->user->main_character->character_id, 64, [], true))->url(64);
+        $this->role = env('APPLICATION_DISCORD_MENTION_ROLE');
     }
+
 
     /**
      * Get the notification's delivery channels.
@@ -29,34 +37,50 @@ class ApplicationUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return [DiscordChannel::class];
+        return ['slack'];
     }
-
-    public function toDiscord($notifiable)
+    public function toSlack($notifiable)
     {
-        $status = "";
-        switch ($notifiable->status)
+        $message = new SlackMessage;
+        switch ($this->application->status)
         {
+            case -1:
+                $this->status = "Rejected";
+                $message->error();
+                break;
             case 0:
-                $status = "pending";
+                $this->status = "Pending";
+                $message->warning();
                 break;
             case 1:
-                $status = "reviewing";
+                $this->status = "Reviewing";
+                $message->warning();
                 break;
             case 2:
-                $status = "ready for interview";
+                $this->status = "Ready For Interview";
+                $message->success();
                 break;
             case 3:
-                $status = "accepted";
-                break;
-            case -1:
-                $status = "GTFO nerd";
+                $this->status = "Accepted";
+                $message->success();
                 break;
         }
-        return (new Discord)->post("```Application Update:```" .
-            "\t\n$notifiable->approver has updated $notifiable->character_name's app to $status."
-        );
+        $message->content("$this->role");
+        $message->from('Zahzi The Secretary');
+        $message->attachment(function ($attachment) {
+            $attachment
+                ->title($this->application->approver." updated the status of an application")
+                ->fields([
+                    'Applicant' => $this->application->character_name,
+                    'Status'    => $this->status,
+                ])
+                ->fallback('App details')
+                ->timestamp(carbon($this->application->updated_at))
+                ->footer('SeAT Apply')
+                ->thumb("https:$this->thumb")
+                ->footerIcon('https://i.imgur.com/RJVGc7y.png');
+            return $attachment;
+        });
+        return $message;
     }
-
-
 }

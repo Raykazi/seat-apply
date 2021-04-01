@@ -28,6 +28,7 @@
         }
      },	     
     "require": {
+        "ext-json": "*",
         "eveseat/services": "^4.1",
         "eveseat/eveapi": "^4.0",
         "eveseat/web": "^4.0",

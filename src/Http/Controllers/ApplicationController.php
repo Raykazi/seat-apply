@@ -28,6 +28,7 @@ class ApplicationController extends Controller {
     {
         $questions = QuestionModel::query()->orderby('order', 'asc')->get();
         $responses = array();
+        $responses["Alt Characters"] =  $request->input('altCharacters');
         $rules = array(
             'altCharacters' => 'nullable|string');
         foreach ($questions as $q)
@@ -46,7 +47,6 @@ class ApplicationController extends Controller {
                 ->withErrors($validator)
                 ->withInput($request->all);
         }
-        $responses["Alt Characters"] =  $request->input('altCharacters');
 
         ApplicationModel::create([
             'user_id'           => auth()->user()->id,

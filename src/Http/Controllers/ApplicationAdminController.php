@@ -72,7 +72,7 @@ class ApplicationAdminController extends Controller
         $app = ApplicationModel::find($app_id);
 
         switch ($action) {
-            case 'Approve':
+            case 'Accept':
                 $app->status = '3';
                 break;
             case 'Reject':
