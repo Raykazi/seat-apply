@@ -19,7 +19,7 @@ class ApplicationAdminController extends Controller
 
     public function getApplications()
     {
-        $applications = ApplicationModel::where('status', '<', '10')->orderby('created_at', 'desc')->get();
+        $applications = ApplicationModel::query()->orderby('created_at', 'desc')->get();
         return view('application::list', compact('applications'));
     }
     public function getQuestions()

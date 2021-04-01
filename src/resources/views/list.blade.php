@@ -31,7 +31,7 @@
             </thead>
               <tbody>
               @foreach ($applications as $app)
-                  @if(($app->status))
+                  @if(($app->status >= 0 && $app->status <3))
                       <tr>
                           <td>{{ $app->application_id }} </td>
                           <td><span class='id-to-name' data-id="{{ $app->character_name }}">{{ $app->character_name }}</span></td>
@@ -50,11 +50,9 @@
                               <button type="button" class="btn btn-xs btn-primary app-status" id="app-status" name="{{ $app->application_id }}">Interview</button>
                               <button type="button" class="btn btn-xs btn-success app-status" id="app-status" name="{{ $app->application_id }}">Accept</button>
                           </td>
-                          <td data-order="{{ strtotime($app->created_at) }}>
-                      <span data-toggle="tooltip" data-placement="top" title="{{ $app->created_at }}">{{ human_diff($app->created_at) }}</span>
+                          <td>
+                              <button type="button" class="btn btn-xs btn-success app-view" id="app-view" data-toggle="modal" data-target="#apply-view-app"  data-app-id="{{ $app->application_id }}" name="{{ $app->application_id }}">View</button>
                           </td>
-
-
                           <td id="approver-{{ $app->application_id }}">{{ $app->approver }}</td>
                       </tr>
                   @endif
@@ -63,7 +61,7 @@
           </table>
         </div>
           <div class="tab-pane" id="tab_2">
-          <table id="srps-arch" class="table table-striped">
+          <table id="apps-arch" class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -74,12 +72,41 @@
                     <th>{{ trans('application::application.app_approver') }}</th>
                 </tr>
             </thead>
+              <tbody>
+              @foreach ($applications as $app)
+                  @if(($app->status == -1 || $app->status == 3))
+                      <tr>
+                          <td>{{ $app->application_id }} </td>
+                          <td><span class='id-to-name' data-id="{{ $app->character_name }}">{{ $app->character_name }}</span></td>
+                          @if ($app->status == 0)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-secondary">Pending</span></td>
+                          @elseif ($app->status == -1)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-danger">Rejected</span></td>
+                          @elseif ($app->status == 1)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-warning">Reviewing</span></td>
+                          @elseif ($app->status == 2)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-primary">Interviewing</span></td>
+                          @endif
+                          <td>
+                              <button type="button" class="btn btn-xs btn-danger app-status" id="app-status" name="{{ $app->application_id }}">Delyeet</button>
+                              <button type="button" class="btn btn-xs btn-warning app-status" id="app-status" name="{{ $app->application_id }}">Review</button>
+                              <button type="button" class="btn btn-xs btn-success app-status" id="app-status" name="{{ $app->application_id }}">Accept</button>
+                          </td>
+                          <td>
+                              <button type="button" class="btn btn-xs btn-success app-view" id="app-view" data-toggle="modal" data-target="#apply-view-app"  data-app-id="{{ $app->application_id }}" name="{{ $app->application_id }}">View</button>
+                          </td>
+                          <td id="approver-{{ $app->application_id }}">{{ $app->approver }}</td>
+                      </tr>
+                  @endif
+              @endforeach
+              </tbody>
           </table>
         </div>
         </div>
           </div>
     </div>
 </div>
+    @include('application::includes.view-app-modal')
 @stop
 
 @push('javascript')

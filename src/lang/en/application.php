@@ -16,7 +16,7 @@ return [
 
     'app_status'  =>  'Application Status',
     'app_action'  =>  'Action',
-    'app_notes'  =>  'Notes',
+    'app_notes'  =>  'Responses',
     'app_approver'  =>  'Approved By',
 
 
