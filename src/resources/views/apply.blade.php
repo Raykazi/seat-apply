@@ -92,7 +92,7 @@
         </div>
             <div class="card-body">
                 <div class="box-body instructions">
-                    {{print($instruction[0]->instructions)}}
+                    {!! $instruction[0]->instructions !!}
                 </div>
             </div>
     </div>
