@@ -24,7 +24,7 @@ class CreateApplicationTables extends Migration
             $table->timestamps();
             $table->primary(['user_id', 'application_id']);
         });
-        Schema::create('seat_application_instructions', function (Blueprint $table) {
+        Schema::create('seat_application_settings', function (Blueprint $table) {
             $table->string('id');
             $table->string('corp_name');
             $table->string('instructions');
@@ -48,7 +48,7 @@ class CreateApplicationTables extends Migration
     public function down()
     {
         Schema::dropIfExists('seat_application_apps');
-        Schema::dropIfExists('seat_application_instructions');
+        Schema::dropIfExists('seat_application_settings');
         Schema::dropIfExists('seat_application_questions');
     }
 }

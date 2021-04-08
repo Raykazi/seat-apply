@@ -62,6 +62,7 @@ class ApplicationAdminController extends Controller
         } else
         {
             $records[0]->instructions = $instructions;
+            $records[0]->corp_name = $corpName;
             $records[0]->save();
         }
         return redirect()->back()->with('success', trans('application::application.settings_updated'));
