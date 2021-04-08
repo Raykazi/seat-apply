@@ -106,7 +106,7 @@
                     @case(-1)
 
                     <p><img src="web/img/sad-pepe.png" width="128" height="128"><br><span class="badge badge-error">Denied</span></p>
-                    <p>Your application to Windrammers was denied. We've most likely sent you the reasoning for this via Discord - Feel free to contact us if you have any questions.</p>
+                    <p>Your application to {{$instruction[0]->corp_name}} was denied. We've most likely sent you the reasoning for this via Discord - Feel free to contact us if you have any questions.</p>
                     @break;
                     @case(0)
                     <p><span class="badge badge-default">Pending</span></p>
@@ -122,7 +122,7 @@
                     @break;
                     @case(3)
                     <p><span class="badge badge-success">Successful</span></p>
-                    <p>Welcome to Windrammers! Please check the Windrammers Discord for instructions.</p>
+                    <p>Welcome to {{$instruction[0]->corp_name}}! Please check the {{$instruction[0]->corp_name}} Discord for instructions.</p>
                     @break;
                 @endswitch
 

@@ -58,7 +58,7 @@ class ApplicationUpdated extends AbstractNotification
                 break;
             case 2:
                 $this->status = "Ready For Interview";
-                $message->success();
+                $message->warning();
                 break;
             case 3:
                 $this->status = "Accepted";

@@ -25,8 +25,8 @@ class ApplicationAdminController extends Controller
     public function getQuestions()
     {
         $questions = QuestionModel::query()->orderby('order', 'asc')->get();
-        //$instructions = InstructionModel::query()->get();
-        return view('application::questions', compact('questions'));
+        $instructions = InstructionModel::query()->get();
+        return view('application::questions', compact('questions','instructions'));
     }
     public function getQuestion($qid)
     {
@@ -36,7 +36,35 @@ class ApplicationAdminController extends Controller
     public function deleteQuestion($qid)
     {
         $questions = QuestionModel::where('qid', '=', $qid)->delete();
-        return response()->json($questions);
+        return redirect()->back()->with('success', trans('application::application.question_deleted'));
+    }
+    public function updateSettings(Request $request)
+    {
+        $rules = array(
+            'corpName' => 'required|string',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect(route('application.questions'))
+                ->withErrors($validator)
+                ->withInput($request->all);
+        }
+        $instructions = $request->input('message', '');
+        $corpName = $request->input('corpName','');
+        $records = InstructionModel::all();
+        if(count($records)== 0)
+        {
+            InstructionModel::create([
+                'instructions' => $instructions,
+                'corp_name'        => $corpName
+            ]);
+
+        } else
+        {
+            $records[0]->instructions = $instructions;
+            $records[0]->save();
+        }
+        return redirect()->back()->with('success', trans('application::application.settings_updated'));
     }
     public function submitQuestion(Request $request)
     {
@@ -47,7 +75,6 @@ class ApplicationAdminController extends Controller
             'questionRequired' => 'required|string',
             'questionType' => 'required|string',
             'questionOptions' => 'nullable|string',
-
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -64,7 +91,7 @@ class ApplicationAdminController extends Controller
             'hint'        => $request->input('questionHint')
         ]);
 
-        return redirect()->back()->with('success', trans('application::application.submitted'));
+        return redirect()->back()->with('success', trans('application::application.application_submitted'));
     }
 
     public function updateApplication($app_id, $action)

@@ -41,6 +41,11 @@ Route::group([
             'uses' => 'ApplicationAdminController@submitQuestion',
             'middleware' => 'can:application.director'
         ]);
+        Route::post('/submitSettings', [
+            'as'   => 'application.submitSettings',
+            'uses' => 'ApplicationAdminController@updateSettings',
+            'middleware' => 'can:application.director'
+        ]);
         Route::get('/admin/{application_id}/{action}', [
             'as'   => 'application.recruiter',
             'uses' => 'ApplicationAdminController@updateApplication',
@@ -52,5 +57,9 @@ Route::group([
             'uses' => 'ApplicationAdminController@getQuestion',
             'middleware' => 'can:application.director',
         ]);
+        Route::delete('/question/{qid}')
+            ->name('application.question.delete')
+            ->uses('ApplicationAdminController@deleteQuestion')
+            ->middleware('can:application.director');
     });
 });

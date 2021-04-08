@@ -78,19 +78,16 @@
                       <tr>
                           <td>{{ $app->application_id }} </td>
                           <td><span class='id-to-name' data-id="{{ $app->character_name }}">{{ $app->character_name }}</span></td>
-                          @if ($app->status == 0)
-                              <td id="id-{{ $app->application_id }}"><span class="badge badge-secondary">Pending</span></td>
-                          @elseif ($app->status == -1)
+                          @if ($app->status == -1)
                               <td id="id-{{ $app->application_id }}"><span class="badge badge-danger">Rejected</span></td>
-                          @elseif ($app->status == 1)
-                              <td id="id-{{ $app->application_id }}"><span class="badge badge-warning">Reviewing</span></td>
-                          @elseif ($app->status == 2)
-                              <td id="id-{{ $app->application_id }}"><span class="badge badge-primary">Interviewing</span></td>
+                          @elseif ($app->status == 3)
+                              <td id="id-{{ $app->application_id }}"><span class="badge badge-success">Accepted</span></td>
                           @endif
                           <td>
-                              <button type="button" class="btn btn-xs btn-danger app-status" id="app-status" name="{{ $app->application_id }}">Delyeet</button>
-                              <button type="button" class="btn btn-xs btn-warning app-status" id="app-status" name="{{ $app->application_id }}">Review</button>
                               <button type="button" class="btn btn-xs btn-success app-status" id="app-status" name="{{ $app->application_id }}">Accept</button>
+                              <button type="button" class="btn btn-xs btn-warning app-status" id="app-status" name="{{ $app->application_id }}">Review</button>
+                              <button type="button" class="btn btn-xs btn-danger app-status" id="app-status" name="{{ $app->application_id }}">Reject</button>
+                              <button type="button" class="btn btn-xs btn-primary app-status" id="app-status" name="{{ $app->application_id }}">Delete</button>
                           </td>
                           <td>
                               <button type="button" class="btn btn-xs btn-success app-view" id="app-view" data-toggle="modal" data-target="#apply-view-app"  data-app-id="{{ $app->application_id }}" name="{{ $app->application_id }}">View</button>
@@ -132,9 +129,9 @@
           timeout: 5000
         }).done(function (data) {
           if (data.name === "Accept") {
-              $("#id-"+data.value).html('<span class="badge badge-success">Accepted</span>');
+              location.reload();
           } else if (data.name === "Reject") {
-              $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');
+              location.reload();
           } else if (data.name === "Interview") {
               $("#id-"+data.value).html('<span class="badge badge-primary">Ready For Interview</span>');
           } else if (data.name === "Review") {
@@ -142,6 +139,24 @@
           }
           $("#approver-"+data.value).html(data.approver);
         });
+    });
+    $('#apps-arch tbody').on('click', 'button', function(btn) {
+      $.ajax({
+          headers: function() {},
+          url: "{{ route('application.list') }}/" + btn.target.name + "/" + $(btn.target).text(),
+          dataType: 'json',
+          timeout: 5000
+      }).done(function (data) {
+          if (data.name === "Accept") {
+              $("#id-"+data.value).html('<span class="badge badge-success">Accepted</span>');
+          } else if (data.name === "Reject") {
+              $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');
+          } else if (data.name === "Delete") {
+          } else if (data.name === "Review") {
+              location.reload();
+          }
+          $("#approver-"+data.value).html(data.approver);
+      });
     });
 
 });

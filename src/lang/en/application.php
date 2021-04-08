@@ -22,4 +22,11 @@ return [
 
 
     'add_question'  =>  'Add Question',
+    'add_header' => 'Add Header',
+    'add_instructions' => 'Settings',
+    'settings_updated' => 'Updated Settings',
+
+
+    'question_deleted' => 'Question successfully deleted.',
+    'application_submitted' => 'Application  successfully submitted.',
 ];

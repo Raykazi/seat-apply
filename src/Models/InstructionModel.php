@@ -10,11 +10,11 @@ class InstructionModel extends Model {
 
     public $timestamps = false;
 
-//    protected $primaryKey = '';
+    protected $primaryKey = 'id';
 
     protected $table = 'seat_application_instructions';
 
     protected $fillable = [
-        'instructions'
+        'instructions', 'corp_name'
     ];
 }
