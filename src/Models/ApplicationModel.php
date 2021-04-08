@@ -23,12 +23,6 @@ class ApplicationModel extends Model {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected static function boot()
-    {
-        parent::boot();
-//        self::updated(function ($model) {
-//        });
-    }
     public function user()
     {
         return $this->belongsTo(User::class);

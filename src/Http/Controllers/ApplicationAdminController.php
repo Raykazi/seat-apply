@@ -91,43 +91,4 @@ class ApplicationAdminController extends Controller
 
         return json_encode(['name' => $action, 'value' => $app_id, 'approver' => auth()->user()->name]);
     }
-    public function srpSaveKillMail(AddKillMail $request)
-    {
-
-        KillMail::create([
-            'user_id'        => auth()->user()->id,
-            'character_name' => $request->input('srpCharacterName'),
-            'kill_id'        => $request->input('srpKillId'),
-            'kill_token'     => $request->input('srpKillToken'),
-            'approved'       => 0,
-            'cost'           => $request->input('srpCost'),
-            'type_id'        => $request->input('srpTypeId'),
-            'ship_type'      => $request->input('srpShipType')
-        ]);
-
-        return redirect()->back()->with('success', trans('application::application.submitted'));
-    }
-
-    public function srpAddReason(AddReason $request)
-    {
-
-        $kill_id = $request->input('srpKillId');
-
-        $killmail  = ApplicationModel::find($kill_id);
-
-        
-
-        if (is_null($killmail))
-        return redirect()->back()
-            ->with('error', trans('srp::srp.not_found'));
-
-        $reason = $killmail->reason();
-        if (!is_null($reason)) 
-            $reason->delete();
-
-        ApplicationModel::addNote($request->input('srpKillId'), 'reason', $request->input('srpReasonContent'));
-        
-        return redirect()->back()
-                         ->with('success', trans('srp::srp.note_updated'));
-    }
 }
