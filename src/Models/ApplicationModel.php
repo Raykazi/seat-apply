@@ -6,6 +6,7 @@ namespace Raykazi\Seat\SeatApplication\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Raykazi\Seat\SeatApplication\Notifications\ApplicationSubmitted;
 use Illuminate\Database\Eloquent\Model;
+use Raykazi\Seat\SeatApplication\Observers\ApplicationObserver;
 use Seat\Web\Models\User;
 
 class ApplicationModel extends Model {

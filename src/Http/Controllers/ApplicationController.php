@@ -10,7 +10,7 @@ use Seat\Web\Http\Controllers\Controller;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Raykazi\Seat\SeatApplication\Models\ApplicationModel;
 use Raykazi\Seat\SeatApplication\Models\QuestionModel;
-use Raykazi\Seat\SeatApplication\Models\InstructionModel;
+use Raykazi\Seat\SeatApplication\Models\SettingsModel;
 use stdClass;
 
 
@@ -20,7 +20,7 @@ class ApplicationController extends Controller {
     {
         $application = ApplicationModel::where('user_id', auth()->user()->id)->get();
         $questions = QuestionModel::query()->orderby('order', 'asc')->get();
-        $instruction = InstructionModel::query()->get();
+        $instruction = SettingsModel::query()->get();
         return view('application::apply', compact("application", "questions", "instruction"));
     }
 
@@ -57,16 +57,11 @@ class ApplicationController extends Controller {
         ]);
 
 
-        return redirect()->back()->with('success', trans('application::application.submitted'));
+        return redirect()->back()->with('success', trans('application::application.application_submitted'));
     }
 
     public function getAboutView()
     {
         return view("application::about");
-    }
-
-    public function getInstructionsView()
-    {
-        return view("srp::instructions");
     }
 }

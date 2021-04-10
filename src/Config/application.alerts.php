@@ -13,6 +13,12 @@ return [
             'slack' => \Raykazi\Seat\SeatApplication\Notifications\ApplicationUpdated::class,
         ],
     ],
+    'application_deleted' => [
+        'label' => 'Application Deleted',
+        'handlers' => [
+            'slack' => \Raykazi\Seat\SeatApplication\Notifications\ApplicationDeleted::class,
+        ],
+    ],
     // Core Notifications
     'created_user' => [
         'label' => 'notifications::alerts.created_user',

@@ -41,6 +41,11 @@ Route::group([
             'uses' => 'ApplicationAdminController@submitQuestion',
             'middleware' => 'can:application.director'
         ]);
+        Route::post('/updateQuestion', [
+            'as'   => 'application.updateQuestion',
+            'uses' => 'ApplicationAdminController@updateQuestion',
+            'middleware' => 'can:application.director'
+        ]);
         Route::post('/submitSettings', [
             'as'   => 'application.submitSettings',
             'uses' => 'ApplicationAdminController@updateSettings',
@@ -50,13 +55,21 @@ Route::group([
             'as'   => 'application.recruiter',
             'uses' => 'ApplicationAdminController@updateApplication',
             'middleware' => 'can:application.recruiter'
-        ])->where(['action' => 'Accept|Reject|Interview|Review']);
+        ])->where(['action' => 'Accept|Reject|Interview|Review|Delete']);
 
         Route::get('/question/{qid}', [
             'as' => 'application.question',
             'uses' => 'ApplicationAdminController@getQuestion',
             'middleware' => 'can:application.director',
         ]);
+        Route::get('/application/{aid}')
+            ->name('application.application')
+            ->uses('ApplicationAdminController@getApplication')
+            ->middleware('can:application.director');
+        Route::delete('/application/{aid}')
+            ->name('application.application.delete')
+            ->uses('ApplicationAdminController@deleteApplication')
+            ->middleware('can:application.director');
         Route::delete('/question/{qid}')
             ->name('application.question.delete')
             ->uses('ApplicationAdminController@deleteQuestion')

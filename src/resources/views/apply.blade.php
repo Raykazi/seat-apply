@@ -18,16 +18,12 @@
                     <div class="col-md-8">
                         <input id="mainCharacter" name="main" class="form-control input-md" value="{{ auth()->user()->name }}" type="text" disabled>
                     </div>
-                </div>
-                <div class="form-group row">
                     <label for="altCharacters" class="col-form-label col-md-4">Alt Character(s)</label>
                     <div class="col-md-8">
                         <textarea id="altCharacters" name="altCharacters" class="form-control input-md" rows="3" style="margin-top: 8px;">{{ old('altCharacters') }}</textarea>
                         <p class="form-text text-muted mb-0">Please list any alt characters with skillpoints here.</p>
                     </div>
-                </div>
                     @foreach ($questions as $q)
-                    <div class="form-group row">
                         <label for="q-{{ $q->qid }}" class="col-form-label col-md-4">{{$q->order}}. {{ $q->question }}</label>
                         @if($q->type != "checkbox")
                         @endif
@@ -66,9 +62,9 @@
                                 <p class="form-text text-muted mb-0">{{$q->hint}}</p>
                             @endif
                         </div>
-                    </div>
                     @endforeach
                 </div>
+            </div>
             <div class="card-footer">
                         <button type="submit" class="btn btn-success float-right">
                             <i class="fas fa-check"></i> Apply

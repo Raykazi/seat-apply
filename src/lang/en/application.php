@@ -27,6 +27,8 @@ return [
     'settings_updated' => 'Updated Settings',
 
 
+
     'question_deleted' => 'Question successfully deleted.',
+    'question_updated' => 'Question updated',
     'application_submitted' => 'Application  successfully submitted.',
 ];

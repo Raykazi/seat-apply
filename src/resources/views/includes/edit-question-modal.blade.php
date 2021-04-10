@@ -7,16 +7,22 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form role="form" name="editQuestion" id="editQuestion" action="{{ route('application.updateQuestion') }}" method="post">
             <div class="modal-body">
                 <div class="form-group row">
                     <label for="questionNumber" class="col-form-label col-md-4">Question Number</label>
                     <div class="col-md-8">
-                        <input id="questionNumber" name="questionNumber" class="form-control" value="{{ count($questions)+1 }}" type="number">
+                        <input id="questionNumber" name="questionNumber" class="form-control" type="number">
                         <p class="form-text text-muted mb-0"></p>
                     </div>
                     <label for="questionInput" class="col-form-label col-md-4">Question</label>
                     <div class="col-md-8">
-                        <input id="questionInput" name="questionInput" class="form-control" value="" type="text">
+                        <input id="questionInput" name="questionInput" class="form-control" type="text">
+                        <p class="form-text text-muted mb-0"></p>
+                    </div>
+                    <label for="questionHint" class="col-form-label col-md-4">Question Hint</label>
+                    <div class="col-md-8">
+                        <input id="questionHint" name="questionHint" type="text" class="form-control">
                         <p class="form-text text-muted mb-0"></p>
                     </div>
                     <label for="questionRequired" class="col-form-label col-md-4">Required</label>
@@ -39,7 +45,7 @@
                     </div>
                     <label for="questionOptions" class="col-form-label col-md-4">Choices</label>
                     <div class="col-md-8">
-                        <input id="questionOptions" name="questionOptions" value="" type="text" class="form-control">
+                        <input id="questionOptions" name="questionOptions" type="text" class="form-control">
                         <p class="form-text text-muted mb-0">Use comma-separated values here.</p>
                     </div>
                 </div>
@@ -50,6 +56,7 @@
                 </button>
                 {{ csrf_field() }}
             </div>
+            </form>
         </div>
     </div>
 </div>

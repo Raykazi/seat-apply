@@ -151,27 +151,7 @@
             </div>
         </form>
     </div>
-{{--        <form role="form" action="" method="post" id="customise-login-form">--}}
-{{--            {{ csrf_field() }}--}}
-{{--            <div class="card-body">--}}
-{{--                <div class="form-group row">--}}
-{{--                    <div id="login_page_content"></div>--}}
-{{--                    <input type="hidden" name="message" value="" />--}}
-{{--                    <div class="col-md-8">--}}
-{{--                        <input type="hidden" name="id" value="{{ $request->id }}">--}}
-{{--                        <textarea id="editInstructions" name="editInstructions" class="form-control input-md" rows="6" value="" type="text" style="margin-top: 8px;">{{$instructions[0]->instructions}}</textarea>--}}
-{{--                        <p class="form-text text-muted mb-0">HTML can be used here.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="card-footer">--}}
-{{--		    <button type="submit" class="btn btn-info float-right">--}}
-{{--                            <i class="far fa-edit"></i> Edit Instructions--}}
-{{--            </button>--}}
-{{--                {{ csrf_field() }}--}}
-{{--            </div>--}}
-{{--        </form>--}}
-    </div>
+</div>
 @stop
 
 @push('head')
@@ -245,9 +225,12 @@
                     dataType: 'json',
                     method: 'GET'
                 }).done(function(response){
+                    // $('#apply-edit-question').find('#questionID').val(response.qid);
                     $('#apply-edit-question').find('#questionNumber').val(response.order);
                     $('#apply-edit-question').find('#questionInput').val(response.question);
+                    $('#apply-edit-question').find('#questionHint').val(response.hint);
                     $('#apply-edit-question').find('#questionOptions').val(response.options);
+                    $('#editQuestion').append('<input type="hidden" name="questionID" value="'+response.qid+'" />');
 
                     if(response.required =="Yes")
                         $('#apply-edit-question').find('#questionRequired option:eq(0)').prop('selected', true);

@@ -152,13 +152,34 @@
           } else if (data.name === "Reject") {
               $("#id-"+data.value).html('<span class="badge badge-danger">Rejected</span>');
           } else if (data.name === "Delete") {
+              location.reload();
           } else if (data.name === "Review") {
               location.reload();
           }
           $("#approver-"+data.value).html(data.approver);
       });
     });
+  });
+  $(function () {
+      $('#apply-view-app').on('show.bs.modal', function(e){
+          var link = '{{ route('application.application', 0) }}';
+          var rlink = link.replace('/0', '/' + $(e.relatedTarget).attr('data-app-id'));
+          $(this).find('.overlay').show();
+          $.ajax({
+              url: rlink,
+              dataType: 'json',
+              method: 'GET'
+          }).done(function(response){
+              $('#apply-view-app').find('#mainCharacter').val(response.character_name);
+              $('#apply-view-app').find('#altCharacters').val(response.alt_characters);
+              $('#apply-view-app').find('#responses').val(response.responses);
+          }).fail(function(jqXHR, status){
+              alert(jqXHR);
+          });
 
-});
+          $(this).find('.overlay').hide();
+      });
+
+  });
 </script>
 @endpush
