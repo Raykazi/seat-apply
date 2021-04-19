@@ -9,7 +9,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 use Illuminate\Support\Facades\Log;
 
-class ApplicationUpdated extends AbstractNotification
+class ApplicationDeleted extends AbstractNotification
 {
     use NotificationTools;
     /**
@@ -28,7 +28,6 @@ class ApplicationUpdated extends AbstractNotification
         $this->role = env('APPLICATION_DISCORD_MENTION_ROLE');
     }
 
-
     /**
      * Get the notification's delivery channels.
      *
@@ -42,37 +41,14 @@ class ApplicationUpdated extends AbstractNotification
     public function toSlack($notifiable)
     {
         $message = new SlackMessage;
-        switch ($this->application->status)
-        {
-            case -1:
-                $this->status = "Rejected";
-                $message->error();
-                break;
-            case 0:
-                $this->status = "Pending";
-                $message->warning();
-                break;
-            case 1:
-                $this->status = "Reviewing";
-                $message->warning();
-                break;
-            case 2:
-                $this->status = "Ready For Interview";
-                $message->warning();
-                break;
-            case 3:
-                $this->status = "Accepted";
-                $message->success();
-                break;
-        }
+        $message->error();
         $message->content("$this->role");
         $message->from('Zahzi The Secretary');
         $message->attachment(function ($attachment) {
             $attachment
-                ->title($this->application->approver." updated the status of an application")
+                ->title($this->application->approver." deleted an application.")
                 ->fields([
-                    'Applicant' => $this->application->character_name,
-                    'Status'    => $this->status,
+                    'Applicant' => $this->application->character_name
                 ])
                 ->fallback('App details')
                 ->timestamp(carbon($this->application->updated_at))

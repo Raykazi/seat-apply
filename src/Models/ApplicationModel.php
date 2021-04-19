@@ -3,16 +3,13 @@
 namespace Raykazi\Seat\SeatApplication\Models;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Raykazi\Seat\SeatApplication\Notifications\ApplicationSubmitted;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Seat\Services\Models\Note;
-use Seat\Services\Traits\NotableTrait;
+use Raykazi\Seat\SeatApplication\Observers\ApplicationObserver;
+use Seat\Web\Models\User;
 
 class ApplicationModel extends Model {
-
-	use NotableTrait;
-	use Notifiable;
 
     public $timestamps = true;
 
@@ -23,12 +20,12 @@ class ApplicationModel extends Model {
     protected $fillable = [
             'user_id', 'application_id', 'character_name', 'responses', 'notes', 'status', 'approver'
     ];
-    protected static function boot()
-    {
-        parent::boot();
 
-        self::created(function($model){
-            $model->notify(new ApplicationSubmitted());
-        });
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

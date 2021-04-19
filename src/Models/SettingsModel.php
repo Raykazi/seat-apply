@@ -5,16 +5,16 @@ namespace Raykazi\Seat\SeatApplication\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InstructionModel extends Model {
+class SettingsModel extends Model {
 
 
     public $timestamps = false;
 
-//    protected $primaryKey = '';
+    protected $primaryKey = 'id';
 
-    protected $table = 'seat_application_instructions';
+    protected $table = 'seat_application_settings';
 
     protected $fillable = [
-        'instructions'
+        'instructions', 'corp_name'
     ];
 }
