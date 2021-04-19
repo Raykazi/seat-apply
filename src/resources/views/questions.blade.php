@@ -138,7 +138,8 @@
             <div class="form-group row">
                 <label for="corpName" class="col-form-label col-md-4">Corporation Name </label>
                 <div class="col-md-8">
-                    <input id="corpName" name="corpName" class="form-control" value="{{ $instructions[0]->corp_name }}" type="text">
+                    <input id="corpName" name="corpName" class="form-control" value="@if(count($instructions) != 0)
+                    {{ $instructions[0]->corp_name }} @endif" type="text">
                     <p class="form-text text-muted mb-0">Who are people applying to.</p>
                 </div>
                 <label for="questionInput" class="col-form-label col-md-4">Instructions</label>
@@ -194,7 +195,7 @@
             placeholder: 'Type instructions here',
             theme: 'snow'
         });
-        editor.setContents(editor.clipboard.convert('{!! addslashes($instructions[0]->instructions) !!}'), 'silent');
+        editor.setContents(editor.clipboard.convert('@if(count($instructions) != 0) {!! addslashes($instructions[0]->instructions) !!} @endif'), 'silent');
         $('#customize-instructions-form').on('submit', function () {
             $('input[name="message"]').val(editor.getHtml());
         });

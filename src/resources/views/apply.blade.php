@@ -88,7 +88,11 @@
         </div>
             <div class="card-body">
                 <div class="box-body instructions">
-                    {!! $instruction[0]->instructions !!}
+                    @if(count($instruction) != 0)
+                        {!! $instruction[0]->instructions !!}
+                    @else
+                        Please add your instructions/message on the questions page.
+                    @endif
                 </div>
             </div>
     </div>
@@ -98,6 +102,7 @@
             <h3 class="card-title">{{ trans('application::application.app_status') }}</h3>
         </div>
         <div class="card-body">
+            @if(count($instruction) != 0)
                 @switch($application[0]->status)
                     @case(-1)
 
@@ -121,6 +126,9 @@
                     <p>Welcome to {{$instruction[0]->corp_name}}! Please check the {{$instruction[0]->corp_name}} Discord for instructions.</p>
                     @break;
                 @endswitch
+            @else
+                Please add your Corporation Name on the questions page.
+            @endif
 
         </div>
     </div>
