@@ -106,7 +106,7 @@ class ApplicationAdminController extends Controller
             'hint'        => $request->input('questionHint')
         ]);
 
-        return redirect()->back()->with('success', trans('application::application.application_submitted'));
+        return redirect()->back()->with('success', trans('application::application.question_submitted'));
     }
     public function updateQuestion(Request $request)
     {

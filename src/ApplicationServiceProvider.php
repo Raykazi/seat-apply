@@ -27,9 +27,10 @@ class ApplicationServiceProvider extends AbstractSeatPlugin
     }
     private function add_alerts()
     {
-        $this->publishes([
-            __DIR__ . '/Config/application.alerts.php' => config_path('notifications.alerts.php'),
-        ], ['config', 'seat']);
+//        $this->publishes([
+//            __DIR__ . '/Config/application.alerts.php' => config_path('notifications.alerts.php'),
+//        ], ['config', 'seat']);
+        $this->mergeConfigFrom(__DIR__ . '/Config/application.alerts.php', 'notifications.alerts.php');
     }
     private function add_events()
     {
